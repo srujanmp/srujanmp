@@ -5,20 +5,19 @@ import { getCollection, render } from 'astro:content';
 const allProjects = await getCollection('projects');
 allProjects.sort((a, b) => parseInt(b.data.year) - parseInt(a.data.year));
 
-// Map tech names to Nerd Font glyphs AND their brand colors
 const techIcons: Record<string, { icon: string; color: string }> = {
-  "Go": { icon: "", color: "text-[#00ADD8]" },           // Go Cyan
-  "Node.js": { icon: "󰎙", color: "text-[#339933]" },      // Node Green
-  "Express.js": { icon: "󰎙", color: "text-zinc-400" },    // Express Grey
-  "Next.js": { icon: "", color: "text-zinc-900 dark:text-white" }, // Next.js Black/White (using React logo temporarily)
-  "MongoDB": { icon: "", color: "text-[#47A248]" },      // Mongo Leaf Green
-  "PostgreSQL": { icon: "", color: "text-[#336791]" },   // Postgres Blue
-  "Redis": { icon: "", color: "text-[#DC382D]" },        // Redis Red
-  "Docker": { icon: "󰡨", color: "text-[#2496ED]" },       // Docker Blue
-  "Kubernetes": { icon: "󱃾", color: "text-[#326CE5]" },   // K8s Blue
-  "RabbitMQ": { icon: "󰒋", color: "text-[#FF6600]" },     // RabbitMQ Orange
-  "HTML": { icon: "", color: "text-[#E34F26]" },         // HTML Orange
-  "CSS": { icon: "", color: "text-[#1572B6]" },          // CSS Blue
+  "Go": { icon: "", color: "text-[#00ADD8]" },
+  "Node.js": { icon: "󰎙", color: "text-[#339933]" },
+  "Express.js": { icon: "󰎙", color: "text-zinc-400" },
+  "Next.js": { icon: "", color: "text-zinc-900 dark:text-white" },
+  "MongoDB": { icon: "", color: "text-[#47A248]" },
+  "PostgreSQL": { icon: "", color: "text-[#336791]" },
+  "Redis": { icon: "", color: "text-[#DC382D]" },
+  "Docker": { icon: "󰡨", color: "text-[#2496ED]" },
+  "Kubernetes": { icon: "󱃾", color: "text-[#326CE5]" },
+  "RabbitMQ": { icon: "󰒋", color: "text-[#FF6600]" },
+  "HTML": { icon: "", color: "text-[#E34F26]" },
+  "CSS": { icon: "", color: "text-[#1572B6]" },
 };
 ---
 
@@ -28,32 +27,43 @@ const techIcons: Record<string, { icon: string; color: string }> = {
   <div class="flex flex-col gap-10">
     {allProjects.map(async (project) => {
       const { Content } = await render(project);
+      const projectLink = project.data.link?.trim();
       return (
-        <article class="border border-zinc-300 dark:border-zinc-700 p-6 shadow-sm">
-          <div class="flex justify-between items-start mb-4">
+        <article class="border border-zinc-300 dark:border-zinc-700 p-6 bg-white/35 dark:bg-zinc-900/20 shadow-sm hover:shadow-[0_8px_22px_rgba(0,0,0,0.10)] dark:hover:shadow-[0_8px_22px_rgba(0,0,0,0.45)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
+          <div class="flex justify-between items-start mb-6">
             <div>
-              <h2 class="font-bold text-lg">
-                {project.data.link ? (
-                  <a href={project.data.link} target="_blank" class="hover:underline">{project.data.title}</a>
+              <h2 class="font-bold text-lg flex items-center gap-2">
+                {projectLink ? (
+                  <a href={projectLink} target="_blank" rel="noopener noreferrer" class="hover:underline">
+                    {project.data.title}
+                  </a>
                 ) : (
                   project.data.title
                 )}
+
+                {projectLink && (
+                  <a href={projectLink} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.data.title} on GitHub`} class="inline-flex items-center text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors shrink-0">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5" aria-hidden="true">
+                      <path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2.08c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.17 1.75 1.17 1.02 1.75 2.67 1.24 3.32.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.65 0-1.25.45-2.27 1.17-3.07-.12-.29-.5-1.45.11-3.03 0 0 .96-.31 3.15 1.17a10.9 10.9 0 0 1 5.73 0c2.18-1.48 3.14-1.17 3.14-1.17.62 1.58.24 2.74.12 3.03.73.8 1.16 1.82 1.16 3.07 0 4.39-2.68 5.36-5.24 5.64.42.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+                    </svg>
+                  </a>
+                )}
               </h2>
 
-              <p class="text-xs mt-2 font-bold text-zinc-500 dark:text-zinc-400 flex gap-4 flex-wrap">
+              <p class="text-sm mt-3 font-bold text-zinc-500 dark:text-zinc-400 flex gap-6 flex-wrap">
                 {project.data.techStack.map(tech => {
                   const techData = techIcons[tech] || { icon: "󰒓", color: "text-zinc-500" };
                   return (
-                    <span class="flex items-center gap-1">
-                      <span class={`text-base ${techData.color}`}>{techData.icon}</span>
-                      <span>{tech}</span>
+                    <span class="flex items-center gap-2">
+                      <span class={`text-2xl ${techData.color}`}>{techData.icon}</span>
+                      <span class="mt-1">{tech}</span>
                     </span>
                   );
                 })}
               </p>
 
             </div>
-            <span class="text-xs border border-zinc-300 dark:border-zinc-700 px-2 py-1">{project.data.year}</span>
+            <span class="text-xs border border-zinc-300 dark:border-zinc-700 px-3 py-1">{project.data.year}</span>
           </div>
           <div class="prose prose-sm dark:prose-invert max-w-none marker:text-zinc-900 dark:marker:text-zinc-100">
             <Content />

@@ -1,36 +1,438 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
+import { ClientRouter } from 'astro:transitions';
 const { title } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" style="font-size: 110%;">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <title>{title}</title>
-    <script>
-      // Check local storage or system preference to set initial theme
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
-      })();
-
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
+    <ClientRouter />
+    <style is:inline>
+      :root {
+        background-color: #eee1bf;
+        background-image:
+          radial-gradient(circle at 15% 20%, rgba(120, 72, 19, 0.12) 0%, rgba(120, 72, 19, 0) 34%),
+          radial-gradient(circle at 86% 82%, rgba(92, 52, 12, 0.1) 0%, rgba(92, 52, 12, 0) 38%),
+          radial-gradient(circle at 50% 12%, rgba(255, 247, 219, 0.38) 0%, rgba(255, 247, 219, 0) 30%),
+          linear-gradient(180deg, #f7edd1 0%, #e7d6ab 52%, #dcc793 100%);
+        color: #18181b;
+        color-scheme: light;
       }
-      window.localStorage.setItem('theme', theme);
+
+      html.dark {
+        background-color: #1A1A1A;
+        background-image: none;
+        color: #f4f4f5;
+        color-scheme: dark;
+      }
+
+      html,
+      body {
+        background-color: inherit;
+        background-image: inherit;
+        background-attachment: fixed;
+        color: inherit;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      html,
+      body,
+      a,
+      button,
+      input,
+      textarea,
+      select,
+      label,
+      [role='button'] {
+        cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23eee1bf'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%23eee1bf'/%3E%3C/g%3E%3C/svg%3E") 16 24, auto;
+      }
+
+      html.dark,
+      html.dark body,
+      html.dark a,
+      html.dark button,
+      html.dark input,
+      html.dark textarea,
+      html.dark select,
+      html.dark label,
+      html.dark [role='button'] {
+        cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%231A1A1A'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%231A1A1A'/%3E%3C/g%3E%3C/svg%3E") 16 24, auto;
+      }
+
+      #pen-cursor {
+        --pen-x: -100px;
+        --pen-y: -100px;
+        --pen-scale: 1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 32px;
+        height: 32px;
+        pointer-events: none;
+        z-index: 1001;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23eee1bf'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%23eee1bf'/%3E%3C/g%3E%3C/svg%3E");
+        transform: translate(var(--pen-x), var(--pen-y)) translate(-50%, -50%) scale(var(--pen-scale));
+        transition: transform 170ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      html.dark #pen-cursor {
+        background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%231A1A1A'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%231A1A1A'/%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      body.pen-over-link #pen-cursor {
+        --pen-scale: 1.38;
+      }
+
+      @media (pointer: fine) {
+        html,
+        body,
+        a,
+        button,
+        input,
+        textarea,
+        select,
+        label,
+        [role='button'] {
+          cursor: none !important;
+        }
+      }
+
+      #pencil-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @keyframes pageFadeLift {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+          filter: blur(3px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+
+      main :where(nav, header, h1, section, article) {
+        opacity: 0;
+        animation: pageFadeLift 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        will-change: transform, opacity, filter;
+      }
+
+      main nav {
+        animation-duration: 480ms;
+      }
+
+      main :where(header, h1) {
+        animation-delay: 70ms;
+      }
+
+      main :where(section, article) {
+        animation-delay: 130ms;
+      }
+
+      main article:nth-of-type(2),
+      main section:nth-of-type(2) {
+        animation-delay: 180ms;
+      }
+
+      main article:nth-of-type(3),
+      main section:nth-of-type(3) {
+        animation-delay: 230ms;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        main :where(nav, header, h1, section, article) {
+          opacity: 1;
+          animation: none;
+          filter: none;
+        }
+      }
+
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 260ms;
+        animation-timing-function: ease;
+      }
+    </style>
+    <script>
+      const getPreferredTheme = () => {
+        if (typeof localStorage !== 'undefined') {
+          const storedTheme = localStorage.getItem('theme');
+          if (storedTheme === 'light' || storedTheme === 'dark') {
+            return storedTheme;
+          }
+        }
+
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+
+      const applyTheme = (theme) => {
+        const root = document.documentElement;
+        root.classList.toggle('dark', theme === 'dark');
+        root.style.colorScheme = theme;
+        localStorage.setItem('theme', theme);
+
+        const icon = document.getElementById('theme-icon');
+        if (icon) {
+          icon.textContent = theme === 'dark' ? '☾' : '☀';
+        }
+      };
+
+      const setupThemeToggle = () => {
+        const button = document.getElementById('theme-toggle');
+        applyTheme(getPreferredTheme());
+
+        if (!button) return;
+
+        button.onclick = () => {
+          const currentlyDark = document.documentElement.classList.contains('dark');
+          applyTheme(currentlyDark ? 'light' : 'dark');
+        };
+      };
+
+      const setupPencilDraw = () => {
+        const canvas = document.getElementById('pencil-canvas');
+        if (!(canvas instanceof HTMLCanvasElement)) return;
+        const penCursor = document.getElementById('pen-cursor');
+
+        const existingState = window.__pencilDrawState;
+        if (existingState?.canvas === canvas) return;
+
+        if (existingState) {
+          window.removeEventListener('resize', existingState.resizeCanvas);
+          window.removeEventListener('pointerdown', existingState.onPointerDown);
+          window.removeEventListener('pointermove', existingState.onPointerMove);
+          window.removeEventListener('pointermove', existingState.onPointerMoveCursor);
+          window.removeEventListener('pointerover', existingState.onPointerOverLink);
+          window.removeEventListener('pointerout', existingState.onPointerOutLink);
+          window.removeEventListener('pointerup', existingState.stopDrawing);
+          window.removeEventListener('pointercancel', existingState.stopDrawing);
+          window.removeEventListener('blur', existingState.stopDrawing);
+          cancelAnimationFrame(existingState.rafId);
+        }
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const lineLifetimeMs = 2100;
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let lastMoveAt = performance.now();
+        let segments = [];
+        const tipOffsetX = -7;
+        const tipOffsetY = -11;
+        const inkTrailLerp = 0.42;
+
+        const resizeCanvas = () => {
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = Math.floor(window.innerWidth * dpr);
+          canvas.height = Math.floor(window.innerHeight * dpr);
+          canvas.style.width = `${window.innerWidth}px`;
+          canvas.style.height = `${window.innerHeight}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const addSegment = (x1, y1, x2, y2, width) => {
+          segments.push({
+            x1,
+            y1,
+            x2,
+            y2,
+            createdAt: performance.now(),
+            width,
+          });
+        };
+
+        const tipPoint = (pageX, pageY) => ({
+          x: pageX + tipOffsetX,
+          y: pageY + tipOffsetY,
+        });
+
+        const onPointerDown = (event) => {
+          if (event.button !== 0) return;
+          if (document.body.classList.contains('pen-over-link')) return;
+          if (event.target instanceof Element && event.target.closest('a[href]')) return;
+          isDrawing = true;
+          lastMoveAt = performance.now();
+          const start = tipPoint(event.pageX, event.pageY);
+          lastX = start.x;
+          lastY = start.y;
+          addSegment(lastX, lastY, lastX + 0.01, lastY + 0.01, 2.1);
+        };
+
+        const onPointerMove = (event) => {
+          if (!isDrawing) return;
+          const target = tipPoint(event.pageX, event.pageY);
+          const nextX = lastX + (target.x - lastX) * inkTrailLerp;
+          const nextY = lastY + (target.y - lastY) * inkTrailLerp;
+
+          const now = performance.now();
+          const dt = Math.max(1, now - lastMoveAt);
+          const distance = Math.hypot(nextX - lastX, nextY - lastY);
+          const speed = distance / dt;
+          const nibWidth = clamp(2.6 - speed * 2.1, 0.95, 2.7);
+
+          addSegment(lastX, lastY, nextX, nextY, nibWidth);
+          lastMoveAt = now;
+          lastX = nextX;
+          lastY = nextY;
+        };
+
+        const stopDrawing = () => {
+          isDrawing = false;
+        };
+
+        const onPointerMoveCursor = (event) => {
+          if (!(penCursor instanceof HTMLElement)) return;
+          penCursor.style.setProperty('--pen-x', `${event.clientX}px`);
+          penCursor.style.setProperty('--pen-y', `${event.clientY}px`);
+        };
+
+        const onPointerOverLink = (event) => {
+          if (!(event.target instanceof Element)) return;
+          if (!event.target.closest('a[href]')) return;
+          stopDrawing();
+          document.body.classList.add('pen-over-link');
+        };
+
+        const onPointerOutLink = (event) => {
+          if (!(event.target instanceof Element)) return;
+          if (!event.target.closest('a[href]')) return;
+          const relatedTarget = event.relatedTarget;
+          if (relatedTarget instanceof Element && relatedTarget.closest('a[href]')) return;
+          document.body.classList.remove('pen-over-link');
+        };
+
+        const state = {
+          canvas,
+          rafId: 0,
+          resizeCanvas: null,
+          onPointerDown: null,
+          onPointerMove: null,
+          onPointerMoveCursor: null,
+          onPointerOverLink: null,
+          onPointerOutLink: null,
+          stopDrawing: null,
+        };
+
+        const render = (now) => {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+          const scrollX = window.scrollX;
+          const scrollY = window.scrollY;
+          ctx.clearRect(0, 0, width, height);
+
+          const darkMode = document.documentElement.classList.contains('dark');
+          const baseColor = darkMode ? '255,255,255' : '0,0,0';
+          segments = segments.filter((segment) => now - segment.createdAt <= lineLifetimeMs);
+
+          for (const segment of segments) {
+            const age = now - segment.createdAt;
+            const fade = Math.max(0, 1 - age / lineLifetimeMs);
+            const nibAngle = -0.6;
+            const offsetScale = segment.width * 0.3;
+            const offsetX = Math.cos(nibAngle + Math.PI / 2) * offsetScale;
+            const offsetY = Math.sin(nibAngle + Math.PI / 2) * offsetScale;
+
+            const x1 = segment.x1 - scrollX;
+            const y1 = segment.y1 - scrollY;
+            const x2 = segment.x2 - scrollX;
+            const y2 = segment.y2 - scrollY;
+
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+              ctx.strokeStyle = `rgba(${baseColor}, ${0.32 * fade})`;
+            ctx.lineWidth = segment.width * 1.45;
+            ctx.beginPath();
+            ctx.moveTo(x1 - offsetX, y1 - offsetY);
+            ctx.lineTo(x2 - offsetX, y2 - offsetY);
+            ctx.stroke();
+
+              ctx.strokeStyle = `rgba(${baseColor}, ${0.78 * fade})`;
+            ctx.lineWidth = segment.width * 0.72;
+            ctx.beginPath();
+            ctx.moveTo(x1 + offsetX, y1 + offsetY);
+            ctx.lineTo(x2 + offsetX, y2 + offsetY);
+            ctx.stroke();
+
+              ctx.fillStyle = `rgba(${baseColor}, ${0.3 * fade})`;
+            ctx.beginPath();
+            ctx.arc(x2, y2, segment.width * 0.2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          state.rafId = requestAnimationFrame(render);
+        };
+
+        state.resizeCanvas = resizeCanvas;
+        state.onPointerDown = onPointerDown;
+        state.onPointerMove = onPointerMove;
+        state.onPointerMoveCursor = onPointerMoveCursor;
+        state.onPointerOverLink = onPointerOverLink;
+        state.onPointerOutLink = onPointerOutLink;
+        state.stopDrawing = stopDrawing;
+        window.__pencilDrawState = state;
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas, { passive: true });
+        window.addEventListener('pointerdown', onPointerDown, { passive: true });
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        window.addEventListener('pointermove', onPointerMoveCursor, { passive: true });
+        window.addEventListener('pointerover', onPointerOverLink, { passive: true });
+        window.addEventListener('pointerout', onPointerOutLink, { passive: true });
+        window.addEventListener('pointerup', stopDrawing, { passive: true });
+        window.addEventListener('pointercancel', stopDrawing, { passive: true });
+        window.addEventListener('blur', stopDrawing, { passive: true });
+        state.rafId = requestAnimationFrame(render);
+      };
+
+      applyTheme(getPreferredTheme());
+
+      document.addEventListener('DOMContentLoaded', () => {
+        setupThemeToggle();
+        setupPencilDraw();
+      });
+      document.addEventListener('astro:page-load', () => {
+        setupThemeToggle();
+        setupPencilDraw();
+      });
     </script>
   </head>
-  <body class="bg-[#FDF8F5] dark:bg-[#1A1A1A] text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] antialiased min-h-screen transition-colors duration-300">
+  <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[22px] antialiased min-h-screen">
+    <div id="pen-cursor" aria-hidden="true"></div>
     <main class="w-[80%] mx-auto py-12">
       <Navbar />
       <slot />
     </main>
+    <canvas id="pencil-canvas" aria-hidden="true"></canvas>
   </body>
 </html>
