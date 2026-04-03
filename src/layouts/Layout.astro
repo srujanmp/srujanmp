@@ -14,12 +14,13 @@ const { title } = Astro.props;
     <ClientRouter />
     <style is:inline>
       :root {
-        background-color: #eee1bf;
+        background-color: #efe3c4;
         background-image:
-          radial-gradient(circle at 15% 20%, rgba(120, 72, 19, 0.12) 0%, rgba(120, 72, 19, 0) 34%),
-          radial-gradient(circle at 86% 82%, rgba(92, 52, 12, 0.1) 0%, rgba(92, 52, 12, 0) 38%),
-          radial-gradient(circle at 50% 12%, rgba(255, 247, 219, 0.38) 0%, rgba(255, 247, 219, 0) 30%),
-          linear-gradient(180deg, #f7edd1 0%, #e7d6ab 52%, #dcc793 100%);
+          radial-gradient(circle at 13% 16%, rgba(196, 125, 52, 0.2) 0%, rgba(196, 125, 52, 0) 35%),
+          radial-gradient(circle at 86% 79%, rgba(170, 102, 44, 0.18) 0%, rgba(170, 102, 44, 0) 40%),
+          radial-gradient(circle at 52% 9%, rgba(255, 250, 232, 0.52) 0%, rgba(255, 250, 232, 0) 30%),
+          radial-gradient(circle at 60% 56%, rgba(255, 225, 168, 0.14) 0%, rgba(255, 225, 168, 0) 44%),
+          linear-gradient(180deg, #faefd5 0%, #eddcb1 48%, #dfc791 100%);
         color: #18181b;
         color-scheme: light;
       }
@@ -127,6 +128,65 @@ const { title } = Astro.props;
         z-index: 999;
       }
 
+      #intro-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 2100;
+        display: grid;
+        place-items: center;
+        background: rgba(248, 236, 208, 0.26);
+        backdrop-filter: blur(12px) saturate(120%);
+        -webkit-backdrop-filter: blur(12px) saturate(120%);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 420ms ease;
+      }
+
+      html.dark #intro-overlay {
+        background: rgba(10, 12, 19, 0.38);
+      }
+
+      body.intro-active #intro-overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      #intro-overlay.intro-fade-out {
+        opacity: 0;
+      }
+
+      #intro-title {
+        font-size: clamp(1.4rem, 5vw, 3.2rem);
+        letter-spacing: 0.18em;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 0 1rem;
+      }
+
+      #intro-title::after {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 0.22em;
+        vertical-align: -0.08em;
+        background: currentColor;
+        animation: introCaretBlink 900ms steps(1, end) infinite;
+      }
+
+      @keyframes introCaretBlink {
+        0%,
+        45% {
+          opacity: 1;
+        }
+
+        46%,
+        100% {
+          opacity: 0;
+        }
+      }
+
       html {
         scroll-behavior: smooth;
       }
@@ -225,6 +285,72 @@ const { title } = Astro.props;
           const currentlyDark = document.documentElement.classList.contains('dark');
           applyTheme(currentlyDark ? 'light' : 'dark');
         };
+      };
+
+      const setupIntroOverlay = () => {
+        const introKey = 'intro-overlay-seen-v1';
+        const text = 'SRUJAN M PADMASHALI';
+        const stepMs = 85;
+        window.__playIntroOverlay = (markSeen) => {
+          const overlay = document.getElementById('intro-overlay');
+          const title = document.getElementById('intro-title');
+          if (!(overlay instanceof HTMLElement) || !(title instanceof HTMLElement)) return;
+
+          if (window.__introOverlayPlaying) return;
+          window.__introOverlayPlaying = true;
+
+          let index = 0;
+          overlay.hidden = false;
+          overlay.classList.remove('intro-fade-out');
+          document.body.classList.add('intro-active');
+          title.textContent = '';
+
+          const typeNext = () => {
+            if (index <= text.length) {
+              title.textContent = text.slice(0, index);
+              index += 1;
+              window.setTimeout(typeNext, stepMs);
+              return;
+            }
+
+            if (markSeen) {
+              localStorage.setItem(introKey, '1');
+            }
+
+            window.setTimeout(() => {
+              overlay.classList.add('intro-fade-out');
+              window.setTimeout(() => {
+                overlay.hidden = true;
+                overlay.classList.remove('intro-fade-out');
+                document.body.classList.remove('intro-active');
+                window.__introOverlayPlaying = false;
+              }, 420);
+            }, 650);
+          };
+
+          typeNext();
+        };
+
+        const hasSeenIntro = localStorage.getItem(introKey) === '1';
+        if (!hasSeenIntro) {
+          window.__playIntroOverlay(true);
+        } else {
+          const overlay = document.getElementById('intro-overlay');
+          if (overlay instanceof HTMLElement) {
+            overlay.classList.remove('intro-fade-out');
+          }
+          overlay.hidden = true;
+          document.body.classList.remove('intro-active');
+        }
+
+        if (window.__introOverlayClickBound) return;
+        window.__introOverlayClickBound = true;
+
+        document.addEventListener('click', (event) => {
+          if (!(event.target instanceof Element)) return;
+          if (!event.target.closest('[data-intro-trigger="profile"]')) return;
+          window.__playIntroOverlay(false);
+        });
       };
 
       const setupPencilDraw = () => {
@@ -433,14 +559,19 @@ const { title } = Astro.props;
       document.addEventListener('DOMContentLoaded', () => {
         setupThemeToggle();
         setupPencilDraw();
+        setupIntroOverlay();
       });
       document.addEventListener('astro:page-load', () => {
         setupThemeToggle();
         setupPencilDraw();
+        setupIntroOverlay();
       });
     </script>
   </head>
   <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[22px] antialiased min-h-screen">
+    <div id="intro-overlay" aria-hidden="true" hidden>
+      <div id="intro-title"></div>
+    </div>
     <div id="pen-cursor" aria-hidden="true"><div id="pen-cursor-icon"></div></div>
     <main class="w-[80%] mx-auto py-12">
       <Navbar />

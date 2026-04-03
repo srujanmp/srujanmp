@@ -23,7 +23,7 @@ const renderedBlogs = await Promise.all(
       </article>
     ) : (
       renderedBlogs.map(({ post, Content }) => (
-        <article class="border border-white/45 dark:border-white/12 p-6 bg-white/20 dark:bg-zinc-900/22 backdrop-blur-md shadow-[0_10px_24px_rgba(30,30,30,0.10)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.38)] hover:shadow-[0_14px_30px_rgba(30,30,30,0.16)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.52)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
+        <article class="border border-white/45 dark:border-white/12 rounded-lg p-6 bg-white/20 dark:bg-zinc-900/22 backdrop-blur-md shadow-[0_10px_24px_rgba(30,30,30,0.10)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.38)] hover:shadow-[0_14px_30px_rgba(30,30,30,0.16)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.52)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
           <header class="border-b border-zinc-300 dark:border-zinc-700 pb-3 mb-4">
             <h2 class="font-bold text-lg">{post.data.title}</h2>
             <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">{post.data.date}</p>
