@@ -20,7 +20,7 @@ const startYear = 2005;
 const currentYear = new Date().getFullYear();
 
 const timelineEvents = {
-  2005: `Born: 21 Sep 2005 • Age ${ageYears}`,
+  2005: `Spawned on 21 Sep 2005`,
   2009: "LKG",
   2010: "UKG",
   2011: "Class 1",
@@ -32,6 +32,8 @@ const timelineEvents = {
   2023: "BTech ISE • NMAMIT",
   2024: "NEW Laptop",
   2025: "Internship @ Comcent.io",
+  2027: "Graduation BTech",
+
 
 };
 
@@ -48,12 +50,12 @@ const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) 
 ---
 
 <Layout title="Srujan M Padmashali | Profile">
-  <header class="flex items-center gap-6 mb-10">
+  <header class="flex items-center gap-6 mb-14">
     <img data-intro-trigger="profile" src="/profile.jpg" alt="Profile Image" class="w-24 h-24 rounded-full grayscale border-2 border-zinc-900 dark:border-zinc-100 object-cover shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(24,24,27,0.18)] dark:hover:shadow-[0_10px_24px_rgba(0,0,0,0.45)]" />
-    <div>
+    <div class="space-y-3">
       <h1 class="text-2xl font-bold uppercase tracking-wider">Srujan M Padmashali</h1>
-      <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">Software Developer</p>
-      <div class="flex gap-4 mt-2 text-sm">
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">Software Developer</p>
+      <div class="flex gap-4 text-sm">
         <a href="mailto:srujanmpadmashali@gmail.com" class="hover:underline">Email</a>
         <a href="https://github.com/srujanmp" target="_blank" class="hover:underline">GitHub</a>
         <a href="https://linkedin.com/in/srujanmpadmashali" target="_blank" class="hover:underline">LinkedIn</a>
@@ -61,14 +63,14 @@ const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) 
     </div>
   </header>
 
-  <section class="mb-10">
+  <section class="mb-14">
     <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">About</h2>
     <p class="leading-relaxed text-base">
       Hey, I'm Srujan. I build backend systems and tinker with full-stack apps. I'm usually writing Go or Node.js, trying to make things run a little faster and scale a little better. When I'm not debugging microservices or tweaking sockets, I'm probably working on random side quests. Keep it simple, make it work.
     </p>
   </section>
 
-  <section>
+  <section class="mb-14">
     <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">Education</h2>
     <div class="mb-4">
       <div class="flex justify-between items-baseline">
@@ -79,7 +81,7 @@ const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) 
     </div>
   </section>
 
-  <section id="history" class="mt-14">
+  <section id="history" class="mt-2">
     <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-8 uppercase">Timeline</h2>
 
     <div id="history-timeline" class="history-timeline">
@@ -236,52 +238,39 @@ const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) 
   <script is:inline>
     const setupScrollTimeline = () => {
       const timeline = document.getElementById('history-timeline');
+      const lineBg = timeline?.querySelector('.history-line-bg');
       const progressBar = document.getElementById('timeline-progress');
       const circle = document.getElementById('timeline-circle');
       const rows = document.querySelectorAll('.history-row');
 
-      if (!timeline || !progressBar || !circle) return;
+      if (!timeline || !lineBg || !progressBar || !circle) return;
 
       let ticking = false;
 
       const updateTimeline = () => {
-    const rect = timeline.getBoundingClientRect();
-    const viewportCenter = window.innerHeight / 2;
+        const rect = timeline.getBoundingClientRect();
+        const viewportCenter = window.innerHeight / 2;
 
-    // The total height the progress bar can travel is the height of the background line
-    // rect.height - padding (15rem = 240px)
-    const totalHeight = rect.height - 240;
-
-    // Calculate progress based on center of screen
-    let progress = viewportCenter - rect.top;
-
-    // IMPORTANT: If we are at the very bottom of the page, force 100% progress
-    const scrollPosition = window.innerHeight + window.scrollY;
-    const threshold = document.documentElement.scrollHeight - 50; // 50px buffer
-
-    if (scrollPosition >= threshold) {
-        progress = totalHeight;
-    } else {
+        const totalHeight = lineBg.getBoundingClientRect().height;
+        let progress = viewportCenter - rect.top;
         progress = Math.max(0, Math.min(progress, totalHeight));
-    }
 
-    progressBar.style.height = `${progress}px`;
-    circle.style.transform = `translate(-50%, ${progress}px)`;
+        progressBar.style.height = `${progress}px`;
+        circle.style.transform = `translate(-50%, ${progress}px)`;
 
-    rows.forEach((row) => {
-      const rowRect = row.getBoundingClientRect();
-      const rowCenter = rowRect.top + (rowRect.height / 2);
+        rows.forEach((row) => {
+          const rowRect = row.getBoundingClientRect();
+          const rowCenter = rowRect.top + (rowRect.height / 2);
 
-      // Slightly wider window (60px) for activation to feel smoother
-      if (Math.abs(rowCenter - viewportCenter) < 60) {
-        row.classList.add('active');
-      } else {
-        row.classList.remove('active');
-      }
-    });
+          if (Math.abs(rowCenter - viewportCenter) < 60) {
+            row.classList.add('active');
+          } else {
+            row.classList.remove('active');
+          }
+        });
 
-    ticking = false;
-  };
+        ticking = false;
+      };
 
       const onScroll = () => {
         if (!ticking) {
@@ -300,4 +289,6 @@ const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) 
     document.addEventListener('DOMContentLoaded', setupScrollTimeline);
     document.addEventListener('astro:page-load', setupScrollTimeline);
   </script>
+
+  <div class="h-[50vh]" aria-hidden="true"></div>
 </Layout>

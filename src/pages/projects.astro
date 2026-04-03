@@ -7,24 +7,45 @@ allProjects.sort((a, b) => parseInt(b.data.year) - parseInt(a.data.year));
 
 const techIcons: Record<string, { icon: string; color: string }> = {
   "Go": { icon: "", color: "text-[#00ADD8]" },
+  "Gin": { icon: "", color: "text-[#00ADD8]" },
   "Node.js": { icon: "󰎙", color: "text-[#339933]" },
+  "Express": { icon: "󰎙", color: "text-zinc-400" },
   "Express.js": { icon: "󰎙", color: "text-zinc-400" },
+  "Socket.IO": { icon: "󰖟", color: "text-zinc-700 dark:text-zinc-200" },
   "Next.js": { icon: "", color: "text-zinc-900 dark:text-white" },
   "MongoDB": { icon: "", color: "text-[#47A248]" },
+  "Mongoose": { icon: "", color: "text-[#880000]" },
   "PostgreSQL": { icon: "", color: "text-[#336791]" },
   "Redis": { icon: "", color: "text-[#DC382D]" },
   "Docker": { icon: "󰡨", color: "text-[#2496ED]" },
   "Kubernetes": { icon: "󱃾", color: "text-[#326CE5]" },
   "RabbitMQ": { icon: "󰒋", color: "text-[#FF6600]" },
+  "EJS": { icon: "", color: "text-[#B4CA65]" },
+  "bcrypt": { icon: "󰌋", color: "text-[#EA4AAA]" },
+  "express-session": { icon: "󰓹", color: "text-[#06B6D4]" },
   "HTML": { icon: "", color: "text-[#E34F26]" },
   "CSS": { icon: "", color: "text-[#1572B6]" },
+  "Gemini AI": { icon: "󰊠", color: "text-[#4F46E5]" },
+  "Flutter": { icon: "", color: "text-[#02569B]" },
+  "Dart": { icon: "", color: "text-[#0175C2]" },
+  "Nearby Connections": { icon: "󰩟", color: "text-[#34A853]" },
+  "Riverpod": { icon: "󰈺", color: "text-[#40C4FF]" },
+  "Firebase": { icon: "", color: "text-[#FFCA28]" },
+  "Dio": { icon: "󰡷", color: "text-[#8E24AA]" },
+  "Drift": { icon: "󰆼", color: "text-[#0EA5E9]" },
+  "WebView": { icon: "󰖟", color: "text-[#0F766E]" },
+  "Godot 4.5": { icon: "", color: "text-[#478CBF]" },
+  "GDScript": { icon: "", color: "text-[#355570]" },
+  "Groq LLM API": { icon: "󰧑", color: "text-[#0EA5E9]" },
+  "Simplex Noise": { icon: "󰿎", color: "text-[#10B981]" },
+  "GDScript RL (DifficultyRL)": { icon: "󰡱", color: "text-[#F59E0B]" },
 };
 ---
 
 <Layout title="Projects | Srujan M Padmashali">
   <h1 class="text-2xl font-bold uppercase tracking-wider mb-8">Projects</h1>
 
-  <div class="flex flex-col gap-10">
+  <div class="flex flex-col gap-14">
     {allProjects.map(async (project) => {
       const { Content } = await render(project);
       const projectLink = project.data.link?.trim();
