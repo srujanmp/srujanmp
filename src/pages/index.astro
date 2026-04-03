@@ -1,11 +1,36 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Srujan M Padmashali | Profile">
+  <header class="flex items-center gap-6 mb-10">
+    <img src="/profile.jpg" alt="Profile Image" class="w-24 h-24 rounded-full grayscale border-2 border-zinc-900 dark:border-zinc-100 object-cover" />
+    <div>
+      <h1 class="text-2xl font-bold uppercase tracking-wider">Srujan M Padmashali</h1>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">Software Developer</p>
+      <div class="flex gap-4 mt-2 text-sm">
+        <a href="mailto:srujanmpadmashali@gmail.com" class="hover:underline">Email</a>
+        <a href="https://github.com/srujanmp" target="_blank" class="hover:underline">GitHub</a>
+        <a href="https://linkedin.com/in/srujanmpadmashali" target="_blank" class="hover:underline">LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="mb-10">
+    <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">About</h2>
+    <p class="leading-relaxed text-sm">
+      Hey, I'm Srujan. I build backend systems and tinker with full-stack apps. I'm usually writing Go or Node.js, trying to make things run a little faster and scale a little better. When I'm not debugging microservices or tweaking sockets, I'm probably working on random side quests. Keep it simple, make it work.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">Education</h2>
+    <div class="mb-4">
+      <div class="flex justify-between items-baseline">
+        <h3 class="font-bold text-sm">BTech in Information Science and Engineering</h3>
+        <span class="text-xs">2023 - 2027</span>
+      </div>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">NMAM Institute of Technology | CGPA: 8.98</p>
+    </div>
+  </section>
 </Layout>

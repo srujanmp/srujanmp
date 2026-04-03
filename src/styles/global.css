@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Force Tailwind v4 to use class-based dark mode for our toggle */
+@custom-variant dark (&:is(.dark *));
+
+/* Load your specific Nerd Font */
+@font-face {
+  font-family: '3270NerdFont';
+  src: url('/3270NerdFont-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

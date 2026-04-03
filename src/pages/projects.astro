@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+allProjects.sort((a, b) => parseInt(b.data.year) - parseInt(a.data.year));
+
+// Map tech names to Nerd Font glyphs AND their brand colors
+const techIcons: Record<string, { icon: string; color: string }> = {
+  "Go": { icon: "", color: "text-[#00ADD8]" },           // Go Cyan
+  "Node.js": { icon: "󰎙", color: "text-[#339933]" },      // Node Green
+  "Express.js": { icon: "󰎙", color: "text-zinc-400" },    // Express Grey
+  "Next.js": { icon: "", color: "text-zinc-900 dark:text-white" }, // Next.js Black/White (using React logo temporarily)
+  "MongoDB": { icon: "", color: "text-[#47A248]" },      // Mongo Leaf Green
+  "PostgreSQL": { icon: "", color: "text-[#336791]" },   // Postgres Blue
+  "Redis": { icon: "", color: "text-[#DC382D]" },        // Redis Red
+  "Docker": { icon: "󰡨", color: "text-[#2496ED]" },       // Docker Blue
+  "Kubernetes": { icon: "󱃾", color: "text-[#326CE5]" },   // K8s Blue
+  "RabbitMQ": { icon: "󰒋", color: "text-[#FF6600]" },     // RabbitMQ Orange
+  "HTML": { icon: "", color: "text-[#E34F26]" },         // HTML Orange
+  "CSS": { icon: "", color: "text-[#1572B6]" },          // CSS Blue
+};
+---
+
+<Layout title="Projects | Srujan M Padmashali">
+  <h1 class="text-2xl font-bold uppercase tracking-wider mb-8">Projects</h1>
+
+  <div class="flex flex-col gap-10">
+    {allProjects.map(async (project) => {
+      const { Content } = await render(project);
+      return (
+        <article class="border border-zinc-300 dark:border-zinc-700 p-6 shadow-sm">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 class="font-bold text-lg">
+                {project.data.link ? (
+                  <a href={project.data.link} target="_blank" class="hover:underline">{project.data.title}</a>
+                ) : (
+                  project.data.title
+                )}
+              </h2>
+
+              <p class="text-xs mt-2 font-bold text-zinc-500 dark:text-zinc-400 flex gap-4 flex-wrap">
+                {project.data.techStack.map(tech => {
+                  const techData = techIcons[tech] || { icon: "󰒓", color: "text-zinc-500" };
+                  return (
+                    <span class="flex items-center gap-1">
+                      <span class={`text-base ${techData.color}`}>{techData.icon}</span>
+                      <span>{tech}</span>
+                    </span>
+                  );
+                })}
+              </p>
+
+            </div>
+            <span class="text-xs border border-zinc-300 dark:border-zinc-700 px-2 py-1">{project.data.year}</span>
+          </div>
+          <div class="prose prose-sm dark:prose-invert max-w-none marker:text-zinc-900 dark:marker:text-zinc-100">
+            <Content />
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</Layout>
