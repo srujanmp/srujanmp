@@ -119,6 +119,31 @@ const { title } = Astro.props;
         }
       }
 
+      @media (pointer: coarse) {
+        #pen-cursor,
+        #pencil-canvas {
+          display: none !important;
+        }
+
+        html,
+        body,
+        a,
+        button,
+        input,
+        textarea,
+        select,
+        label,
+        [role='button'] {
+          cursor: auto !important;
+        }
+      }
+
+      @media (max-width: 640px) and (orientation: portrait) {
+        body {
+          font-size: 12px !important;
+        }
+      }
+
       #pencil-canvas {
         position: fixed;
         inset: 0;
@@ -353,7 +378,32 @@ const { title } = Astro.props;
         });
       };
 
+      const teardownPencilDraw = () => {
+        const existingState = window.__pencilDrawState;
+        if (!existingState) return;
+
+        window.removeEventListener('resize', existingState.resizeCanvas);
+        window.removeEventListener('pointerdown', existingState.onPointerDown);
+        window.removeEventListener('pointermove', existingState.onPointerMove);
+        window.removeEventListener('pointermove', existingState.onPointerMoveCursor);
+        window.removeEventListener('pointerover', existingState.onPointerOverLink);
+        window.removeEventListener('pointerout', existingState.onPointerOutLink);
+        window.removeEventListener('pointerup', existingState.stopDrawing);
+        window.removeEventListener('pointercancel', existingState.stopDrawing);
+        window.removeEventListener('blur', existingState.stopDrawing);
+        cancelAnimationFrame(existingState.rafId);
+
+        window.__pencilDrawState = null;
+        document.body.classList.remove('pen-cursor-ready', 'pen-over-link');
+      };
+
       const setupPencilDraw = () => {
+        const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+        if (!isFinePointer) {
+          teardownPencilDraw();
+          return;
+        }
+
         const canvas = document.getElementById('pencil-canvas');
         if (!(canvas instanceof HTMLCanvasElement)) return;
         const penCursor = document.getElementById('pen-cursor');
@@ -361,18 +411,7 @@ const { title } = Astro.props;
         const existingState = window.__pencilDrawState;
         if (existingState?.canvas === canvas) return;
 
-        if (existingState) {
-          window.removeEventListener('resize', existingState.resizeCanvas);
-          window.removeEventListener('pointerdown', existingState.onPointerDown);
-          window.removeEventListener('pointermove', existingState.onPointerMove);
-          window.removeEventListener('pointermove', existingState.onPointerMoveCursor);
-          window.removeEventListener('pointerover', existingState.onPointerOverLink);
-          window.removeEventListener('pointerout', existingState.onPointerOutLink);
-          window.removeEventListener('pointerup', existingState.stopDrawing);
-          window.removeEventListener('pointercancel', existingState.stopDrawing);
-          window.removeEventListener('blur', existingState.stopDrawing);
-          cancelAnimationFrame(existingState.rafId);
-        }
+        if (existingState) teardownPencilDraw();
 
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
@@ -568,12 +607,12 @@ const { title } = Astro.props;
       });
     </script>
   </head>
-  <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[22px] antialiased min-h-screen">
+  <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[16px] sm:text-[20px] lg:text-[22px] antialiased min-h-screen">
     <div id="intro-overlay" aria-hidden="true" hidden>
       <div id="intro-title"></div>
     </div>
     <div id="pen-cursor" aria-hidden="true"><div id="pen-cursor-icon"></div></div>
-    <main class="w-[80%] mx-auto py-12">
+    <main class="w-[92%] sm:w-[88%] lg:w-[80%] mx-auto py-8 sm:py-10 lg:py-12">
       <Navbar />
       <slot />
     </main>
