@@ -25,8 +25,12 @@ const { title } = Astro.props;
       }
 
       html.dark {
-        background-color: #1A1A1A;
-        background-image: none;
+        background-color: #0f1014;
+        background-image:
+          radial-gradient(circle at 14% 18%, rgba(88, 113, 189, 0.2) 0%, rgba(88, 113, 189, 0) 34%),
+          radial-gradient(circle at 84% 78%, rgba(27, 167, 157, 0.18) 0%, rgba(27, 167, 157, 0) 38%),
+          radial-gradient(circle at 48% 10%, rgba(196, 156, 255, 0.14) 0%, rgba(196, 156, 255, 0) 28%),
+          linear-gradient(180deg, #191c24 0%, #141821 48%, #0f1014 100%);
         color: #f4f4f5;
         color-scheme: dark;
       }
@@ -66,9 +70,6 @@ const { title } = Astro.props;
       }
 
       #pen-cursor {
-        --pen-x: -100px;
-        --pen-y: -100px;
-        --pen-scale: 1;
         position: fixed;
         top: 0;
         left: 0;
@@ -76,20 +77,31 @@ const { title } = Astro.props;
         height: 32px;
         pointer-events: none;
         z-index: 1001;
+        opacity: 0;
+        transform: translate(-50%, -50%);
+      }
+
+      body.pen-cursor-ready #pen-cursor {
+        opacity: 1;
+      }
+
+      #pen-cursor-icon {
+        width: 100%;
+        height: 100%;
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
         background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23eee1bf'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%23eee1bf'/%3E%3C/g%3E%3C/svg%3E");
-        transform: translate(var(--pen-x), var(--pen-y)) translate(-50%, -50%) scale(var(--pen-scale));
+        transform: scale(1);
         transition: transform 170ms cubic-bezier(0.22, 1, 0.36, 1);
       }
 
-      html.dark #pen-cursor {
+      html.dark #pen-cursor-icon {
         background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%231A1A1A'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%231A1A1A'/%3E%3C/g%3E%3C/svg%3E");
       }
 
-      body.pen-over-link #pen-cursor {
-        --pen-scale: 1.38;
+      body.pen-over-link #pen-cursor-icon {
+        transform: scale(1.38);
       }
 
       @media (pointer: fine) {
@@ -312,8 +324,9 @@ const { title } = Astro.props;
 
         const onPointerMoveCursor = (event) => {
           if (!(penCursor instanceof HTMLElement)) return;
-          penCursor.style.setProperty('--pen-x', `${event.clientX}px`);
-          penCursor.style.setProperty('--pen-y', `${event.clientY}px`);
+          penCursor.style.left = `${event.clientX}px`;
+          penCursor.style.top = `${event.clientY}px`;
+          document.body.classList.add('pen-cursor-ready');
         };
 
         const onPointerOverLink = (event) => {
@@ -428,7 +441,7 @@ const { title } = Astro.props;
     </script>
   </head>
   <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[22px] antialiased min-h-screen">
-    <div id="pen-cursor" aria-hidden="true"></div>
+    <div id="pen-cursor" aria-hidden="true"><div id="pen-cursor-icon"></div></div>
     <main class="w-[80%] mx-auto py-12">
       <Navbar />
       <slot />

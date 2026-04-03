@@ -7,7 +7,7 @@
 /* Load your specific Nerd Font */
 @font-face {
   font-family: '3270NerdFont';
-  src: url('/3270NerdFont-Regular.ttf') format('truetype');
+  src: url('/BigBlue.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

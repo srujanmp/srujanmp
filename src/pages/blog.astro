@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+const allBlogs = await getCollection('blog');
+allBlogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const renderedBlogs = await Promise.all(
+  allBlogs.map(async (post) => {
+    const { Content } = await render(post);
+    return { post, Content };
+  })
+);
+---
+
+<Layout title="Blog | Srujan M Padmashali">
+  <h1 class="text-2xl font-bold uppercase tracking-wider mb-8">Blog</h1>
+
+  <div class="flex flex-col gap-10">
+    {renderedBlogs.length === 0 ? (
+      <article class="border border-zinc-300 dark:border-zinc-700 p-6">
+        <p class="text-sm text-zinc-600 dark:text-zinc-400">No blog posts yet. Add an MDX file in src/content/blog to publish one.</p>
+      </article>
+    ) : (
+      renderedBlogs.map(({ post, Content }) => (
+        <article class="border border-white/45 dark:border-white/12 p-6 bg-white/20 dark:bg-zinc-900/22 backdrop-blur-md shadow-[0_10px_24px_rgba(30,30,30,0.10)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.38)] hover:shadow-[0_14px_30px_rgba(30,30,30,0.16)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.52)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
+          <header class="border-b border-zinc-300 dark:border-zinc-700 pb-3 mb-4">
+            <h2 class="font-bold text-lg">{post.data.title}</h2>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">{post.data.date}</p>
+            {post.data.summary && (
+              <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">{post.data.summary}</p>
+            )}
+          </header>
+
+          <div class="prose prose-sm dark:prose-invert max-w-none marker:text-zinc-900 dark:marker:text-zinc-100">
+            <Content />
+          </div>
+        </article>
+      ))
+    )}
+  </div>
+</Layout>
