@@ -23,6 +23,18 @@ const { title } = Astro.props;
           }
         } catch (_) {}
       })();
+
+      if (!window.__themeBeforeSwapBound) {
+        window.__themeBeforeSwapBound = true;
+        document.addEventListener('astro:before-swap', function (e) {
+          try {
+            var t = localStorage.getItem('theme');
+            var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            e.newDocument.documentElement.classList.toggle('dark', dark);
+            e.newDocument.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+          } catch (_) {}
+        });
+      }
     </script>
     <style is:inline>
       :root {
