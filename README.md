@@ -23,13 +23,6 @@ stack /
 ```
 
 ```
-stats /
-```
-
-![](https://github-readme-stats.vercel.app/api?username=srujanmp&show_icons=true&count_private=true&hide_border=true&bg_color=00000000&title_color=8b949e&text_color=6e7681&icon_color=8b949e)
-![](https://streak-stats.demolab.com?user=srujanmp&hide_border=true&background=00000000&stroke=8b949e&ring=8b949e&fire=8b949e&currStreakNum=c9d1d9&sideNums=6e7681&currStreakLabel=8b949e&sideLabels=6e7681&dates=6e7681)
-
-```
 activity /
 ```
 
