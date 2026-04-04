@@ -1,46 +1,23 @@
-# Astro Starter Kit: Basics
+# Srujan M Padmashali
 
-```sh
-npm create astro@latest -- --template basics
-```
+**Software Developer** · Backend Systems · Full-Stack
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+BTech Information Science & Engineering — NMAMIT (2023–2027)
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+### About
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+I build backend systems and full-stack applications, primarily in **Go** and **Node.js**, focused on performance and scalability. Currently interning at **Comcent.io**.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+### Tech Stack
 
-All commands are run from the root of the project, from a terminal:
+`Go` `Node.js` `Next.js` `Flutter` `PostgreSQL` `MongoDB` `Redis` `RabbitMQ` `Docker` `Kubernetes` `Socket.IO` `Godot`
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+### Links
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+🌐 [Portfolio](https://srujanmp.pages.dev) · 💼 [LinkedIn](https://linkedin.com/in/srujanmpadmashali) · 📧 [srujanmpadmashali@gmail.com](mailto:srujanmpadmashali@gmail.com)
