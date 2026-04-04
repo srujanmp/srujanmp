@@ -5,7 +5,7 @@ import { ClientRouter } from 'astro:transitions';
 const { title } = Astro.props;
 ---
 
-<html lang="en" style="font-size: 110%;">
+<html lang="en">
   <head>
     <!-- Must be first: applies dark class before any CSS paint to prevent flash -->
     <script is:inline>
@@ -162,9 +162,9 @@ const { title } = Astro.props;
         }
       }
 
-      @media (max-width: 640px) and (orientation: portrait) {
+      @media (max-width: 640px) {
         body {
-          font-size: 12px !important;
+          font-size: 13px;
         }
       }
 
@@ -641,7 +641,7 @@ const { title } = Astro.props;
       });
     </script>
   </head>
-  <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[16px] sm:text-[20px] lg:text-[22px] antialiased min-h-screen">
+  <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[14px] sm:text-[17px] lg:text-[19px] antialiased min-h-screen">
     <div id="intro-overlay" aria-hidden="true" hidden>
       <div id="intro-title"></div>
     </div>
