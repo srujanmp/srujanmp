@@ -7,9 +7,33 @@ const { title } = Astro.props;
 
 <html lang="en" style="font-size: 110%;">
   <head>
+    <!-- Must be first: applies dark class before any CSS paint to prevent flash -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          }
+        } catch (_) {}
+      })();
+
+      if (!window.__themeBeforeSwapBound) {
+        window.__themeBeforeSwapBound = true;
+        document.addEventListener('astro:before-swap', function (e) {
+          try {
+            var t = localStorage.getItem('theme');
+            var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            e.newDocument.documentElement.classList.toggle('dark', dark);
+            e.newDocument.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+          } catch (_) {}
+        });
+      }
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
     <title>{title}</title>
     <ClientRouter />
     <style is:inline>
@@ -214,6 +238,8 @@ const { title } = Astro.props;
 
       html {
         scroll-behavior: smooth;
+        /* Reserves space for the scrollbar so it never shifts layout */
+        scrollbar-gutter: stable;
       }
 
       @keyframes pageFadeLift {
@@ -270,10 +296,18 @@ const { title } = Astro.props;
         }
       }
 
-      ::view-transition-old(root),
+      /* Sequence the transition: old fades OUT fully, then new fades IN.
+         This avoids the two pages overlapping at partial opacity, which
+         would bleed through to the white browser background. */
+      @keyframes vt-fade-out { to   { opacity: 0; } }
+      @keyframes vt-fade-in  { from { opacity: 0; } }
+
+      ::view-transition-old(root) {
+        animation: 150ms ease-in vt-fade-out forwards;
+      }
+
       ::view-transition-new(root) {
-        animation-duration: 260ms;
-        animation-timing-function: ease;
+        animation: 200ms ease-out vt-fade-in 150ms backwards;
       }
     </style>
     <script>
@@ -548,21 +582,21 @@ const { title } = Astro.props;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
-              ctx.strokeStyle = `rgba(${baseColor}, ${0.32 * fade})`;
+            ctx.strokeStyle = `rgba(${baseColor}, ${0.32 * fade})`;
             ctx.lineWidth = segment.width * 1.45;
             ctx.beginPath();
             ctx.moveTo(x1 - offsetX, y1 - offsetY);
             ctx.lineTo(x2 - offsetX, y2 - offsetY);
             ctx.stroke();
 
-              ctx.strokeStyle = `rgba(${baseColor}, ${0.78 * fade})`;
+            ctx.strokeStyle = `rgba(${baseColor}, ${0.78 * fade})`;
             ctx.lineWidth = segment.width * 0.72;
             ctx.beginPath();
             ctx.moveTo(x1 + offsetX, y1 + offsetY);
             ctx.lineTo(x2 + offsetX, y2 + offsetY);
             ctx.stroke();
 
-              ctx.fillStyle = `rgba(${baseColor}, ${0.3 * fade})`;
+            ctx.fillStyle = `rgba(${baseColor}, ${0.3 * fade})`;
             ctx.beginPath();
             ctx.arc(x2, y2, segment.width * 0.2, 0, Math.PI * 2);
             ctx.fill();
@@ -613,7 +647,7 @@ const { title } = Astro.props;
     </div>
     <div id="pen-cursor" aria-hidden="true"><div id="pen-cursor-icon"></div></div>
     <main class="w-[92%] sm:w-[88%] lg:w-[80%] mx-auto py-8 sm:py-10 lg:py-12">
-      <Navbar />
+      <Navbar transition:persist="navbar" />
       <slot />
     </main>
     <canvas id="pencil-canvas" aria-hidden="true"></canvas>
