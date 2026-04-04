@@ -12,6 +12,18 @@ const { title } = Astro.props;
     <meta name="color-scheme" content="light dark" />
     <title>{title}</title>
     <ClientRouter />
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          }
+        } catch (_) {}
+      })();
+    </script>
     <style is:inline>
       :root {
         background-color: #efe3c4;
@@ -613,7 +625,7 @@ const { title } = Astro.props;
     </div>
     <div id="pen-cursor" aria-hidden="true"><div id="pen-cursor-icon"></div></div>
     <main class="w-[92%] sm:w-[88%] lg:w-[80%] mx-auto py-8 sm:py-10 lg:py-12">
-      <Navbar />
+      <Navbar transition:persist="navbar" />
       <slot />
     </main>
     <canvas id="pencil-canvas" aria-hidden="true"></canvas>

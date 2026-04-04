@@ -15,7 +15,7 @@ const navLinkBaseClass =
   <div class="flex justify-between items-center gap-3">
     <nav class="hidden md:flex gap-8">
       {navItems.map((item) => (
-        <a href={item.href} data-astro-prefetch="hover" class={`${navLinkBaseClass} ${currentPath === item.key ? 'font-bold after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'}`}>
+        <a href={item.href} data-astro-prefetch="hover" data-nav-key={item.key} class={`${navLinkBaseClass} ${currentPath === item.key ? 'font-bold after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'}`}>
           {item.label}
         </a>
       ))}
@@ -41,6 +41,8 @@ const navLinkBaseClass =
           <a
             href={item.href}
             data-astro-prefetch="hover"
+            data-nav-key={item.key}
+            data-nav-label={item.label}
             role="menuitem"
             class={`block px-3 py-2 text-base border-b border-zinc-300/70 dark:border-zinc-700/70 last:border-b-0 ${currentPath === item.key ? 'font-bold bg-zinc-200/60 dark:bg-zinc-800/70' : 'hover:bg-zinc-200/50 dark:hover:bg-zinc-800/60'}`}
           >
@@ -62,6 +64,52 @@ const navLinkBaseClass =
       </button>
     </div>
   </div>
+
+  <script is:inline>
+    const updateNavActive = () => {
+      const currentPath = window.location.pathname.slice(1);
+
+      // Update desktop nav links
+      document.querySelectorAll('nav a[data-nav-key]').forEach((link) => {
+        if (!(link instanceof HTMLAnchorElement)) return;
+        const key = link.dataset.navKey ?? '';
+        const isActive = key === currentPath;
+        link.classList.toggle('font-bold', isActive);
+        link.classList.toggle('after:scale-x-100', isActive);
+        link.classList.toggle('after:scale-x-0', !isActive);
+        link.classList.toggle('hover:after:scale-x-100', !isActive);
+      });
+
+      // Update mobile menu links
+      const mobileMenu = document.getElementById('mobile-tab-menu');
+      if (mobileMenu instanceof HTMLElement) {
+        mobileMenu.querySelectorAll('a[data-nav-key]').forEach((link) => {
+          if (!(link instanceof HTMLAnchorElement)) return;
+          const key = link.dataset.navKey ?? '';
+          const isActive = key === currentPath;
+          link.classList.toggle('font-bold', isActive);
+          link.classList.toggle('bg-zinc-200/60', isActive);
+          link.classList.toggle('dark:bg-zinc-800/70', isActive);
+          link.classList.toggle('hover:bg-zinc-200/50', !isActive);
+          link.classList.toggle('dark:hover:bg-zinc-800/60', !isActive);
+        });
+
+        // Update mobile toggle button label
+        const activeLink = mobileMenu.querySelector('a[data-nav-key].font-bold');
+        const label =
+          activeLink instanceof HTMLElement ? (activeLink.dataset.navLabel ?? 'Profile') : 'Profile';
+        const toggleSpan = document.querySelector('#mobile-tab-toggle span:first-child');
+        if (toggleSpan instanceof HTMLElement) toggleSpan.textContent = label;
+
+        // Close mobile menu after navigation
+        mobileMenu.classList.add('hidden');
+        const toggle = document.getElementById('mobile-tab-toggle');
+        if (toggle instanceof HTMLButtonElement) toggle.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    document.addEventListener('astro:after-swap', updateNavActive);
+  </script>
 
   <script is:inline>
     const setupMobileTabSwitch = () => {
