@@ -50,7 +50,7 @@ const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) 
 ---
 
 <Layout title="Srujan M Padmashali | Profile">
-  <header class="flex items-center gap-6 mb-14">
+  <header class="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 mb-8 sm:mb-14">
     <img data-intro-trigger="profile" src="/profile.jpg" alt="Profile Image" class="w-24 h-24 rounded-full grayscale border-2 border-zinc-900 dark:border-zinc-100 object-cover shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(24,24,27,0.18)] dark:hover:shadow-[0_10px_24px_rgba(0,0,0,0.45)]" />
     <div class="space-y-3">
       <h1 class="text-2xl font-bold uppercase tracking-wider">Srujan M Padmashali</h1>
@@ -63,19 +63,19 @@ const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) 
     </div>
   </header>
 
-  <section class="mb-14">
+  <section class="mb-8 sm:mb-14">
     <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">About</h2>
     <p class="leading-relaxed text-base">
       Hey, I'm Srujan. I build backend systems and tinker with full-stack apps. I'm usually writing Go or Node.js, trying to make things run a little faster and scale a little better. When I'm not debugging microservices or tweaking sockets, I'm probably working on random side quests. Keep it simple, make it work.
     </p>
   </section>
 
-  <section class="mb-14">
+  <section class="mb-8 sm:mb-14">
     <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">Education</h2>
     <div class="mb-4">
-      <div class="flex justify-between items-baseline">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-0.5 sm:gap-2">
         <h3 class="font-bold text-sm">BTech in Information Science and Engineering</h3>
-        <span class="text-xs">2023 - 2027</span>
+        <span class="text-xs text-zinc-500 dark:text-zinc-400 sm:text-inherit sm:shrink-0">2023 - 2027</span>
       </div>
       <p class="text-sm text-zinc-600 dark:text-zinc-400">NMAM Institute of Technology | CGPA: 9</p>
     </div>

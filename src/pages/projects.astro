@@ -51,7 +51,7 @@ const techIcons: Record<string, { icon: string; color: string }> = {
       const projectLink = project.data.link?.trim();
       return (
         <article class="border border-white/45 dark:border-white/12 rounded-lg p-6 bg-white/20 dark:bg-zinc-900/22 backdrop-blur-md shadow-[0_10px_24px_rgba(30,30,30,0.10)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.38)] hover:shadow-[0_14px_30px_rgba(30,30,30,0.16)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.52)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
-          <div class="flex justify-between items-start mb-6">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4 mb-6">
             <div>
               <h2 class="font-bold text-lg flex items-center gap-2">
                 {projectLink ? (
@@ -71,20 +71,22 @@ const techIcons: Record<string, { icon: string; color: string }> = {
                 )}
               </h2>
 
-              <p class="text-sm mt-3 font-bold text-zinc-500 dark:text-zinc-400 flex gap-6 flex-wrap">
-                {project.data.techStack.map(tech => {
-                  const techData = techIcons[tech] || { icon: "󰒓", color: "text-zinc-500" };
-                  return (
-                    <span class="flex items-center gap-2">
-                      <span class={`text-2xl ${techData.color}`}>{techData.icon}</span>
-                      <span class="mt-1">{tech}</span>
-                    </span>
-                  );
-                })}
-              </p>
+              <div class="overflow-x-auto mt-3 -mx-1 px-1 pb-1">
+                <ul aria-label="Technologies used" class="text-sm font-bold text-zinc-500 dark:text-zinc-400 flex gap-4 flex-nowrap sm:flex-wrap sm:gap-6 list-none p-0 m-0">
+                  {project.data.techStack.map(tech => {
+                    const techData = techIcons[tech] || { icon: "󰒓", color: "text-zinc-500" };
+                    return (
+                      <li class="flex items-center gap-1.5 shrink-0">
+                        <span class={`text-xl sm:text-2xl ${techData.color}`} aria-hidden="true">{techData.icon}</span>
+                        <span class="mt-1">{tech}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
 
             </div>
-            <span class="text-xs border border-zinc-300 dark:border-zinc-700 px-3 py-1">{project.data.year}</span>
+            <span class="self-start text-xs border border-zinc-300 dark:border-zinc-700 px-3 py-1 shrink-0">{project.data.year}</span>
           </div>
           <div class="prose prose-sm dark:prose-invert max-w-none marker:text-zinc-900 dark:marker:text-zinc-100">
             <Content />

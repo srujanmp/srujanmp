@@ -13,7 +13,7 @@ const allExperience = await getCollection('experience');
       const { Content } = await render(exp); // <-- Change this line
       return (
         <article class="border border-white/45 dark:border-white/12 rounded-lg p-6 bg-white/20 dark:bg-zinc-900/22 backdrop-blur-md shadow-[0_10px_24px_rgba(30,30,30,0.10)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.38)] hover:shadow-[0_14px_30px_rgba(30,30,30,0.16)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.52)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
-          <div class="flex justify-between items-baseline border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 gap-1 sm:gap-4">
             <div>
               <h2 class="font-bold text-lg">{exp.data.role}</h2>
               <p class="text-sm text-zinc-600 dark:text-zinc-400">
@@ -27,7 +27,7 @@ const allExperience = await getCollection('experience');
                 — {exp.data.location}
               </p>
             </div>
-            <span class="text-xs whitespace-nowrap">{exp.data.date}</span>
+            <span class="text-xs shrink-0 self-start sm:self-auto text-zinc-500 dark:text-zinc-400 sm:text-inherit">{exp.data.date}</span>
           </div>
           <div class="prose prose-sm dark:prose-invert max-w-none marker:text-zinc-900 dark:marker:text-zinc-100">
             <Content />
