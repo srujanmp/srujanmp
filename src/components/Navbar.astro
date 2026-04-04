@@ -108,7 +108,10 @@ const navLinkBaseClass =
       }
     };
 
-    document.addEventListener('astro:after-swap', updateNavActive);
+    if (!window.__navAfterSwapBound) {
+      window.__navAfterSwapBound = true;
+      document.addEventListener('astro:after-swap', updateNavActive);
+    }
   </script>
 
   <script is:inline>
