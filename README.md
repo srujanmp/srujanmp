@@ -1,6 +1,17 @@
+<p align="center">
+  <a href="https://srujanmp.pages.dev/">
+    <img src="https://srujanmp.pages.dev/profile.jpg" width="120" style="border-radius: 50%;" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://srujanmp.pages.dev/">
+    <img src="https://img.shields.io/badge/VISIT%20MY%20PORTFOLIO-000?style=for-the-badge&logo=rocket&logoColor=white" / width="100%">
+  </a>
+</p>
 `find me /`
 
-[srujanmp.pages.dev](https://srujanmp.pages.dev) · [linkedin](https://linkedin.com/in/srujanmpadmashali) · [srujanmpadmashali@gmail.com](mailto:srujanmpadmashali@gmail.com)
+[linkedin](https://linkedin.com/in/srujanmpadmashali) · [srujanmpadmashali@gmail.com](mailto:srujanmpadmashali@gmail.com)
 ```
 ╔─────────────────────────────────────────────────────────────╗
 │  srujanmp                                                   │
