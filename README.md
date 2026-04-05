@@ -6,9 +6,12 @@
 
 <p align="center">
   <a href="https://srujanmp.pages.dev/">
-    <img src="https://img.shields.io/badge/VISIT%20MY%20PORTFOLIO-000?style=for-the-badge&logo=rocket&logoColor=white" width="100%">
+    <img src="https://img.shields.io/badge/%20Visit%20My%20Portfolio-111827?style=for-the-badge&logo=rocket&logoColor=white" / width=100%>
   </a>
 </p>
+
+
+
 
 <div align="center">
 
@@ -28,8 +31,15 @@
 
 𝖋𝖎𝖓𝖉 𝖒𝖊 /
 
-<a href="https://linkedin.com/in/srujanmpadmashali">𝖑𝖎𝖓𝖐𝖊𝖉𝖎𝖓</a> · 
-<a href="mailto:srujanmpadmashali@gmail.com">𝖊𝖒𝖆𝖎𝖑</a>
+<p align="center">
+  <a href="https://linkedin.com/in/srujanmpadmashali"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="30" /></a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="mailto:srujanmpadmashali@gmail.com"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" width="30" style="border-radius:6px;" /></a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.instagram.com/srujanmpadmashali"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="30" style="border-radius:6px;" /></a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="tel:+918105302470"><img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" width="30" style="border-radius:6px;" /></a>
+</p>
 
 
 𝖇𝖚𝖎𝖑𝖉 𝖇𝖆𝖈𝖐𝖊𝖓𝖉 𝖘𝖞𝖘𝖙𝖊𝖒𝖘. 𝖜𝖗𝖎𝖙𝖊 𝖌𝖔 𝖆𝖓𝖉 𝖓𝖔𝖉𝖊.𝖏𝖘<br>
