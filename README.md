@@ -38,7 +38,9 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://www.instagram.com/srujanmpadmashali"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="30" style="border-radius:6px;" /></a>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="tel:+918105302470"><img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" width="30" style="border-radius:6px;" /></a>
+<a href="https://wa.me/918105302470">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="30" style="border-radius:6px;" />
+</a>
 </p>
 
 
