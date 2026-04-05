@@ -1,12 +1,12 @@
 <p align="center">
   <a href="https://srujanmp.pages.dev/">
-    <img src="https://github.com/user-attachments/assets/00f05862-117a-4d15-84cd-1de23f023736" width="150" style="border-radius: 50%;" />
+    <img src="https://github.com/user-attachments/assets/00f05862-117a-4d15-84cd-1de23f023736" width="120" style="border-radius: 50%;" />
   </a>
 </p>
 
 <p align="center">
   <a href="https://srujanmp.pages.dev/">
-    <img src="https://img.shields.io/badge/VISIT%20MY%20PORTFOLIO-000?style=for-the-badge&logo=rocket&logoColor=white" height=150 width="100%">
+    <img src="https://img.shields.io/badge/VISIT%20MY%20PORTFOLIO-000?style=for-the-badge&logo=rocket&logoColor=white" width="100%">
   </a>
 </p>
 
