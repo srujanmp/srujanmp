@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://srujanmp.pages.dev/">
-    <img src="https://img.shields.io/badge/VISIT%20MY%20PORTFOLIO-000?style=for-the-badge&logo=rocket&logoColor=white" / width="100%">
+    <img src="https://img.shields.io/badge/VISIT%20MY%20PORTFOLIO-000?style=for-the-badge&logo=rocket&logoColor=white" width="100%">
   </a>
 </p>
 
@@ -14,29 +14,31 @@
 
 <pre>
 ╔═════════════════════════════════════════════════════════════╗
-║                         srujanmp                           ║
-║     💻 Software Developer · Backend · Full-Stack           ║
-║              🎓 NMAMIT · ISE · 2023–2027                   ║
+║                        𝖘𝖗𝖚𝖏𝖆𝖓𝖒𝖕𝖆𝖉𝖒𝖆𝖘𝖍𝖆𝖑𝖎                        ║
+║              💻 𝖘𝖔𝖋𝖙𝖜𝖆𝖗𝖊 𝖉𝖊𝖛𝖊𝖑𝖔𝖕𝖊𝖗 · 𝖇𝖆𝖈𝖐𝖊𝖓𝖉 · 𝖋𝖚𝖑𝖑-𝖘𝖙𝖆𝖈𝖐             ║
+║                  🎓 𝖓𝖒𝖆𝖒𝖎𝖙 · 𝖎𝖘𝖊 · 2023–2027                  ║
 ╚═════════════════════════════════════════════════════════════╝
 </pre>
 
 </div>
+
 <br>
+
 <p align="center">
 
-𝗳𝗶𝗻𝗱 𝗺𝗲 /
+𝖋𝖎𝖓𝖉 𝖒𝖊 /
 
-<a href="https://linkedin.com/in/srujanmpadmashali">linkedin</a> · 
-<a href="mailto:srujanmpadmashali@gmail.com">email</a>
+<a href="https://linkedin.com/in/srujanmpadmashali">𝖑𝖎𝖓𝖐𝖊𝖉𝖎𝖓</a> · 
+<a href="mailto:srujanmpadmashali@gmail.com">𝖊𝖒𝖆𝖎𝖑</a>
 
 
-𝗯𝘂𝗶𝗹𝗱 𝗯𝗮𝗰𝗸𝗲𝗻𝗱 𝘀𝘆𝘀𝘁𝗲𝗺𝘀. 𝘄𝗿𝗶𝘁𝗲 𝗚𝗼 𝗮𝗻𝗱 𝗡𝗼𝗱𝗲.𝗷𝘀<br>
-𝗺𝗮𝗸𝗲 𝘁𝗵𝗶𝗻𝗴𝘀 𝗳𝗮𝘀𝘁. 𝗺𝗮𝗸𝗲 𝘁𝗵𝗶𝗻𝗴𝘀 𝘀𝗰𝗮𝗹𝗲<br>
-𝗶𝗻𝘁𝗲𝗿𝗻𝗶𝗻𝗴 @ 𝗰𝗼𝗺𝗰𝗲𝗻𝘁.𝗶𝗼<br><br>
+𝖇𝖚𝖎𝖑𝖉 𝖇𝖆𝖈𝖐𝖊𝖓𝖉 𝖘𝖞𝖘𝖙𝖊𝖒𝖘. 𝖜𝖗𝖎𝖙𝖊 𝖌𝖔 𝖆𝖓𝖉 𝖓𝖔𝖉𝖊.𝖏𝖘<br>
+𝖒𝖆𝖐𝖊 𝖙𝖍𝖎𝖓𝖌𝖘 𝖋𝖆𝖘𝖙. 𝖒𝖆𝖐𝖊 𝖙𝖍𝖎𝖓𝖌𝖘 𝖘𝖈𝖆𝖑𝖊<br>
+𝖎𝖓𝖙𝖊𝖗𝖓𝖎𝖓𝖌 @ 𝖈𝖔𝖒𝖈𝖊𝖓𝖙.𝖎𝖔<br><br>
 
-𝘀𝘁𝗮𝗰𝗸 / <br>
-𝗚𝗼 · 𝗡𝗼𝗱𝗲.𝗷𝘀 · 𝗡𝗲𝘅𝘁.𝗷𝘀 · 𝗙𝗹𝘂𝘁𝘁𝗲𝗿<br>
-𝗣𝗼𝘀𝘁𝗴𝗿𝗲𝘀 · 𝗠𝗼𝗻𝗴𝗼𝗗𝗕 · 𝗥𝗲𝗱𝗶𝘀 · 𝗥𝗮𝗯𝗯𝗶𝘁𝗠𝗤<br>
-𝗗𝗼𝗰𝗸𝗲𝗿 · 𝗞𝘂𝗯𝗲𝗿𝗻𝗲𝘁𝗲𝘀 · 𝗦𝗼𝗰𝗸𝗲𝘁.𝗶𝗼 · 𝗚𝗼𝗱𝗼𝘁
+𝖘𝖙𝖆𝖈𝖐 / <br>
+𝖌𝖔 · 𝖓𝖔𝖉𝖊.𝖏𝖘 · 𝖓𝖊𝖝𝖙.𝖏𝖘 · 𝖋𝖑𝖚𝖙𝖙𝖊𝖗<br>
+𝖕𝖔𝖘𝖙𝖌𝖗𝖊𝖘 · 𝖒𝖔𝖓𝖌𝖔𝖉𝖇 · 𝖗𝖊𝖉𝖎𝖘 · 𝖗𝖆𝖇𝖇𝖎𝖙𝖒𝖖<br>
+𝖉𝖔𝖈𝖐𝖊𝖗 · 𝖐𝖚𝖇𝖊𝖗𝖓𝖊𝖙𝖊𝖘 · 𝖘𝖔𝖈𝖐𝖊𝖙.𝖎𝖔 · 𝖌𝖔𝖉𝖔𝖙
 
 </p>
