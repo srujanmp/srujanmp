@@ -1,0 +1,14 @@
+
+> my-portfolio@0.0.1 dev
+> astro dev
+
+[vite] connected.
+17:24:12 [types] Generated 1ms
+[vite] connected.
+17:24:12 [content] Syncing content
+17:24:12 [content] Synced content
+17:24:12 [vite] Port 4321 is in use, trying another one...
+ astro  v6.1.3 ready in 2461 ms
+┃ Local    http://localhost:4322/
+┃ Network  use --host to expose
+17:24:12 watching for file changes...
