@@ -1,0 +1,169 @@
+{
+  "name": "Srujan M Padmashali",
+  "username": "srujanmp",
+  "profile": {
+    "role": "Software Developer",
+    "about": "Hey, I'm Srujan. I build backend systems and tinker with full-stack apps. I'm usually writing Go or Node.js, trying to make things run a little faster and scale a little better. When I'm not debugging microservices or tweaking sockets, I'm probably working on random side quests. Keep it simple, make it work."
+  },
+  "education": [
+    {
+      "degree": "BTech in Information Science and Engineering",
+      "duration": "2023 - 2027",
+      "institution": "NMAM Institute of Technology",
+      "cgpa": "9"
+    },
+    {
+      "short": "nmamit · ise · 2023–2027"
+    }
+  ],
+  "birth": {
+    "date": "2005-09-21",
+    "timelineText": "Spawned on 21 Sep 2005"
+  },
+  "contact": {
+    "email": "srujanmpadmashali@gmail.com",
+    "github": "https://github.com/srujanmp",
+    "linkedin": "https://linkedin.com/in/srujanmpadmashali",
+    "instagram": "https://www.instagram.com/srujanmpadmashali",
+    "whatsapp": "https://wa.me/918105302470",
+    "portfolio": "https://srujanmp.pages.dev/"
+  },
+  "experience": [
+    {
+      "role": "Software Developer - Intern",
+      "company": "Comcent.io",
+      "companyLink": "https://www.comcent.io/",
+      "date": "June 2025 - July 2025",
+      "location": "Remote",
+      "details": [
+        "Built a Go-based security tool to detect and automatically block DDoS attacks.",
+        "Created a WebRTC system for real-time audio streaming.",
+        "Sped up chat responses by upgrading the internal APIs.",
+        "Improved server performance by migrating VoIP services to modern backend frameworks."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "EmergencyMesh — Offline P2P Emergency Broadcast App",
+      "year": "2026",
+      "techStack": ["Flutter", "Dart", "Nearby Connections", "Riverpod", "Firebase", "Dio", "Drift", "WebView"],
+      "link": "https://github.com/chaiwalaas/aegis-flutter",
+      "details": [
+        "Built an Android app to send SOS alerts over Bluetooth/Wi-Fi mesh, even without internet.",
+        "Added multi-hop relay with Nearby Connections so alerts can travel across many phones.",
+        "Captured GPS location automatically and kept the app running in the background during emergencies.",
+        "Saved alerts locally with Drift and synced them to the cloud with Dio when internet was available.",
+        "Used Riverpod for clean state management and Firebase for analytics."
+      ]
+    },
+    {
+      "title": "Endless Worlds – AI-Powered Educational Game",
+      "year": "2026",
+      "techStack": ["Godot 4.5", "GDScript", "Groq LLM API", "Simplex Noise", "GDScript RL (DifficultyRL)"],
+      "link": "https://github.com/srujanmp/endless-world",
+      "details": [
+        "Built a 2D learning game in Godot where players solve AI-generated riddles to move ahead.",
+        "Used Groq LLM API to generate topic-based riddles, with fallback riddles when API calls fail.",
+        "Built procedural islands with Simplex noise, so every run feels different.",
+        "Added an adaptive difficulty system (DifficultyRL) based on hints, mistakes, and solve time.",
+        "Included day-night cycle, weather effects, and support for keyboard, gamepad, and mobile touch controls."
+      ]
+    },
+    {
+      "title": "Scalable Food Ordering Platform",
+      "year": "2026",
+      "techStack": ["Next.js", "Go", "Gin", "PostgreSQL", "Redis", "RabbitMQ", "Docker", "Kubernetes"],
+      "link": "https://github.com/endlessworlds/food-platform",
+      "details": [
+        "Built a full-stack food delivery app using a Go microservices backend and Next.js.",
+        "Split the backend into 7 independent services (Auth, Order, Delivery, etc.) so they could scale independently.",
+        "Handled background tasks with RabbitMQ and managed API rate-limits with Redis.",
+        "Deployed everything smoothly using Docker containers and Kubernetes."
+      ]
+    },
+    {
+      "title": "Coedit",
+      "year": "2025",
+      "techStack": ["Node.js", "Express.js", "MongoDB", "Socket.IO", "Gemini AI"],
+      "link": "https://github.com/srujanmp/coedit",
+      "details": [
+        "Built a real-time collaborative document editor using WebSockets.",
+        "Integrated Google OAuth for secure user sign-ins and file privacy.",
+        "Plugged in Gemini AI to auto-correct grammar, translate text, and generate content on the fly."
+      ]
+    },
+    {
+      "title": "Event Management Platform",
+      "year": "2024",
+      "techStack": ["Node.js", "MongoDB", "HTML", "CSS"],
+      "link": "https://github.com/srujanmp/EventHub",
+      "details": [
+        "Led the development of a college event management dashboard.",
+        "Built a fast QR-code scanner system for tracking student attendance in real-time."
+      ]
+    },
+    {
+      "title": "SpyderSpace — Real-Time Social Chat App",
+      "year": "2024",
+      "techStack": ["Node.js", "Express", "MongoDB", "Mongoose", "Socket.IO", "EJS", "bcrypt", "express-session"],
+      "link": "https://github.com/srujanmp/spyderspace2",
+      "details": [
+        "Built a full-stack social app with real-time chat using Socket.IO and MongoDB.",
+        "Added login security with bcrypt and session handling using express-session.",
+        "Built a friends system to send, accept, and decline requests.",
+        "Used Socket.IO rooms for instant two-way chat between users.",
+        "Saved chat history in MongoDB and rendered pages with EJS, including editable profiles."
+      ]
+    }
+  ],
+  "blog": [
+    {
+      "title": "Built This Portfolio Just for Fun",
+      "date": "2026-04-03",
+      "summary": "A quick note on why I made this portfolio and what I wanted to show.",
+      "content": [
+        "I built this portfolio website mostly for fun.",
+        "I wanted one clean place to show what I build and how I think.",
+        "Also yes, it is a small flex for my coding skills.",
+        "I kept the structure simple, added content with MDX, and experimented with UI ideas until it felt like my own style.",
+        "More blogs coming soon as I keep building random side projects and learning new things."
+      ]
+    }
+  ],
+  "timeline": {
+    "startYear": 2005,
+    "events": {
+      "2005": "Spawned on 21 Sep 2005",
+      "2009": "LKG",
+      "2010": "UKG",
+      "2011": "Class 1",
+      "2013": "Intrest in Tech",
+      "2015": "Grandfather's old laptop",
+      "2019": "COVID-19",
+      "2020": "Class 10 completed",
+      "2021": "PUC: PCMC-Computer Science",
+      "2023": "BTech ISE • NMAMIT",
+      "2024": "NEW Laptop",
+      "2025": "Internship @ Comcent.io",
+      "2027": "Graduation BTech"
+    }
+  },
+  "readmeProfile": {
+    "displayNameStyled": "𝖘𝖗𝖚𝖏𝖆𝖓𝖒𝖕𝖆𝖉𝖒𝖆𝖘𝖍𝖆𝖑𝖎",
+    "taglineStyled": "💻 𝖘𝖔𝖋𝖙𝖜𝖆𝖗𝖊 𝖉𝖊𝖛𝖊𝖑𝖔𝖕𝖊𝖗 · 𝖇𝖆𝖈𝖐𝖊𝖓𝖉 · 𝖋𝖚𝖑𝖑-𝖘𝖙𝖆𝖈𝖐",
+    "educationStyled": "🎓 𝖓𝖒𝖆𝖒𝖎𝖙 · 𝖎𝖘𝖊 · 2023–2027",
+    "findMeLabelStyled": "𝖋𝖎𝖓𝖉 𝖒𝖊 /",
+    "linesStyled": [
+      "𝖇𝖚𝖎𝖑𝖉 𝖇𝖆𝖈𝖐𝖊𝖓𝖉 𝖘𝖞𝖘𝖙𝖊𝖒𝖘. 𝖜𝖗𝖎𝖙𝖊 𝖌𝖔 𝖆𝖓𝖉 𝖓𝖔𝖉𝖊.𝖏𝖘",
+      "𝖒𝖆𝖐𝖊 𝖙𝖍𝖎𝖓𝖌𝖘 𝖋𝖆𝖘𝖙. 𝖒𝖆𝖐𝖊 𝖙𝖍𝖎𝖓𝖌𝖘 𝖘𝖈𝖆𝖑𝖊",
+      "𝖎𝖓𝖙𝖊𝖗𝖓𝖎𝖓𝖌 @ 𝖈𝖔𝖒𝖈𝖊𝖓𝖙.𝖎𝖔"
+    ],
+    "stackLabelStyled": "𝖘𝖙𝖆𝖈𝖐 /",
+    "stackLinesStyled": [
+      "𝖌𝖔 · 𝖓𝖔𝖉𝖊.𝖏𝖘 · 𝖓𝖊𝖝𝖙.𝖏𝖘 · 𝖋𝖑𝖚𝖙𝖙𝖊𝖗",
+      "𝖕𝖔𝖘𝖙𝖌𝖗𝖊𝖘 · 𝖒𝖔𝖓𝖌𝖔𝖉𝖇 · 𝖗𝖊𝖉𝖎𝖘 · 𝖗𝖆𝖇𝖇𝖎𝖙𝖒𝖖",
+      "𝖉𝖔𝖈𝖐𝖊𝖗 · 𝖐𝖚𝖇𝖊𝖗𝖓𝖊𝖙𝖊𝖘 · 𝖘𝖔𝖈𝖐𝖊𝖙.𝖎𝖔 · 𝖌𝖔𝖉𝖔𝖙"
+    ]
+  }
+}
