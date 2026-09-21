@@ -1,39 +1,107 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content'; // <-- Add 'render' here
+import SectionHeading from '../components/SectionHeading.astro';
+import TechTags from '../components/TechTags.astro';
+import blazer from '../assets/photos/blazer.jpg';
 
 const allExperience = await getCollection('experience');
+
+const rendered = await Promise.all(
+  allExperience.map(async (exp) => ({ exp, Content: (await render(exp)).Content }))
+);
+
+const toolkit = [
+  {
+    area: 'Languages',
+    items: ['Node.js', 'JavaScript', 'Go', 'Dart', 'GDScript'],
+    note: 'Node.js is where I am most at home.',
+  },
+  {
+    area: 'Backend',
+    items: ['Gin', 'Express.js', 'Socket.IO', 'WebRTC', 'bcrypt'],
+    note: 'REST and WebRTC services, auth, real-time sockets.',
+  },
+  {
+    area: 'Data & infra',
+    items: ['PostgreSQL', 'MongoDB', 'Redis', 'RabbitMQ', 'Docker', 'Git'],
+    note: 'Queues, caching, rate limits, container deploys.',
+  },
+  {
+    area: 'Frontend & mobile',
+    items: ['React', 'Next.js', 'Flutter', 'HTML', 'CSS'],
+    note: 'Enough to ship the whole thing myself.',
+  },
+];
 ---
 
-<Layout title="Experience | Srujan M Padmashali">
-  <h1 class="text-2xl font-bold uppercase tracking-wider mb-8">Experience</h1>
+<Layout
+  title="Experience - Srujan M Padmashali"
+  description="Backend engineering internship at Comcent.io - Go security tooling, WebRTC audio streaming and VoIP performance work."
+>
+  <header class="grid grid-cols-1 sm:grid-cols-12 gap-8 items-start pt-4 pb-14 sm:pb-20">
+    <div class="sm:col-span-8">
+      <p class="eyebrow mb-5" data-rise="1">Where I've worked</p>
+      <h1 class="display text-[clamp(2.5rem,8vw,4.5rem)] text-ink" data-rise="2">Experience</h1>
+    </div>
 
-  <div class="flex flex-col gap-10">
-    {allExperience.map(async (exp) => {
-      const { Content } = await render(exp); // <-- Change this line
-      return (
-        <article class="border border-white/45 dark:border-white/12 rounded-lg p-6 bg-white/20 dark:bg-zinc-900/22 backdrop-blur-md shadow-[0_10px_24px_rgba(30,30,30,0.10)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.38)] hover:shadow-[0_14px_30px_rgba(30,30,30,0.16)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.52)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
-          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 gap-1 sm:gap-4">
-            <div>
-              <h2 class="font-bold text-lg">{exp.data.role}</h2>
-              <p class="text-sm text-zinc-600 dark:text-zinc-400">
-                {exp.data.companyLink ? (
-                  <a href={exp.data.companyLink} target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:underline">
-                    {exp.data.company}
-                  </a>
-                ) : (
-                  exp.data.company
-                )}{' '}
-                — {exp.data.location}
-              </p>
-            </div>
-            <span class="text-xs shrink-0 self-start sm:self-auto text-zinc-500 dark:text-zinc-400 sm:text-inherit">{exp.data.date}</span>
+    <div class="sm:col-span-4" data-rise="3">
+      <div class="frame aspect-[3/4] max-w-[220px]" style="--focus:50% 12%">
+        <Image src={blazer} alt="Srujan M Padmashali" widths={[220, 440]} sizes="220px" loading="eager" />
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-col">
+    {
+      rendered.map(({ exp, Content }) => (
+        <article class="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-5 py-10 sm:py-14 border-t border-line" data-reveal>
+          <div class="md:col-span-3">
+            <p class="mono text-[13px] text-accent mb-1">{exp.data.date}</p>
+            <p class="mono text-[11px] text-ink-3">{exp.data.location}</p>
           </div>
-          <div class="prose prose-sm dark:prose-invert max-w-none marker:text-zinc-900 dark:marker:text-zinc-100">
-            <Content />
+
+          <div class="md:col-span-9">
+            <h2 class="display text-2xl sm:text-3xl text-ink leading-tight mb-2">{exp.data.role}</h2>
+
+            <p class="text-ink-2 mb-6">
+              {exp.data.companyLink ? (
+                <a
+                  href={exp.data.companyLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link text-ink hover:text-accent transition-colors"
+                >
+                  {exp.data.company}
+                </a>
+              ) : (
+                exp.data.company
+              )}
+            </p>
+
+            <div class="prose prose-sm prose-ink max-w-none">
+              <Content />
+            </div>
           </div>
         </article>
-      );
-    })}
+      ))
+    }
   </div>
+
+  <section class="border-t border-line pt-14 sm:pt-20 mt-10" data-reveal>
+    <SectionHeading label="Toolkit" />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10">
+      {
+        toolkit.map((group) => (
+          <div>
+            <h3 class="display text-xl text-ink mb-1.5">{group.area}</h3>
+            <p class="text-sm text-ink-2 mb-4">{group.note}</p>
+            <TechTags items={group.items} />
+          </div>
+        ))
+      }
+    </div>
+  </section>
 </Layout>

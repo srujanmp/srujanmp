@@ -1,0 +1,54 @@
+---
+/**
+ * Adds .is-visible to [data-reveal] elements as they scroll into view.
+ *
+ * All [data-reveal] content starts at opacity:0 behind the .js gate, so this
+ * script is load-bearing: if it never runs, the page body is blank. It therefore
+ * starts as early as DOMContentLoaded (not window load, which waits on every
+ * image) and Layout arms a failsafe that reveals everything if this never
+ * reports in.
+ */
+---
+
+<script>
+  const setup = () => {
+    window.__revealReady = true;
+
+    const targets = document.querySelectorAll('[data-reveal]');
+    if (!targets.length) return;
+
+    if (
+      !('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      targets.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    window.__revealObserver?.disconnect();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+    window.__revealObserver = observer;
+  };
+
+  // Client-side navigation.
+  document.addEventListener('astro:page-load', setup);
+
+  // First load: don't wait on `load` (which blocks until every image settles).
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup, { once: true });
+  } else {
+    setup();
+  }
+</script>

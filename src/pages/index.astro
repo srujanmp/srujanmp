@@ -1,294 +1,423 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import portraitGreen from '../assets/photos/portrait-green.jpg';
+import sofa from '../assets/photos/sofa.jpg';
+import kurtaWall from '../assets/photos/kurta-wall.jpg';
+import ghatsRoad from '../assets/photos/ghats-road.jpg';
+import ghatsWide from '../assets/photos/ghats-wide.jpg';
+import throne from '../assets/photos/throne.jpg';
+import nmamitLogo from '../assets/logos/nmamit.png';
+import vidyodayaLogo from '../assets/logos/vidyodaya.png';
+import gmvpsLogo from '../assets/logos/gmvps.png';
 
-const todayLabel = new Date().toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
+const projects = await getCollection('projects');
 
-const birthDate = new Date('2005-09-21');
-const now = new Date();
-let ageYears = now.getFullYear() - birthDate.getFullYear();
-const hasBirthdayPassedThisYear =
-  now.getMonth() > birthDate.getMonth() ||
-  (now.getMonth() === birthDate.getMonth() && now.getDate() >= birthDate.getDate());
-if (!hasBirthdayPassedThisYear) ageYears -= 1;
+const stack = [
+  'Go', 'JavaScript', 'Node.js', 'PostgreSQL', 'Redis', 'Docker',
+  'RabbitMQ', 'WebRTC', 'React', 'Next.js', 'MongoDB', 'Socket.IO',
+  'Flutter', 'Godot Engine', 'Git',
+];
 
+const stats = [
+  { value: '8.9', label: 'CGPA' },
+  { value: String(projects.length), label: 'Projects' },
+  { value: '1', label: 'Internship' },
+  { value: '2027', label: 'Graduating' },
+];
 
-const startYear = 2005;
+const education = [
+  {
+    course: 'BTech, Information Science & Engineering',
+    school: 'NMAM Institute of Technology, Nitte',
+    years: '2023 - 2027',
+    score: 'CGPA 8.9',
+    logo: nmamitLogo,
+  },
+  {
+    course: 'Class 11 & 12',
+    school: 'Vidyodaya College',
+    years: '2023',
+    score: '94%',
+    logo: vidyodayaLogo,
+  },
+  {
+    course: 'Class 10',
+    school: 'GMVPS',
+    years: '2020',
+    score: '90%',
+    logo: gmvpsLogo,
+  },
+];
+
+const achievements = [
+  'Organized Cipher Chase, a technical event for 50+ participants at College Fest 2025.',
+  'Top 10 in the Hackloop internal hackathon.',
+  '9th rank in the NCAT aptitude exam, 2024.',
+  'Participated in and volunteered at coding contests, workshops and competitions.',
+  'Active member of the coding club and the branch club.',
+];
+
 const currentYear = new Date().getFullYear();
+const startYear = 2005;
 
-const timelineEvents = {
-  2005: `Spawned on 21 Sep 2005`,
-  2009: "LKG",
-  2010: "UKG",
-  2011: "Class 1",
-  2013: "Intrest in Tech",
-  2015: "Grandfather's old laptop",
-  2019: "COVID-19",
-  2020: "Class 10 completed",
-  2021: "PUC: PCMC-Computer Science",
-  2023: "BTech ISE • NMAMIT",
-  2024: "NEW Laptop",
-  2025: "Internship @ Comcent.io",
-  2027: "Graduation BTech",
+// A year can hold more than one event; `month` labels it when that matters.
+type Milestone = { text: string; month?: string; photo?: ImageMetadata; alt?: string };
 
-
+const milestones: Record<number, Milestone[]> = {
+  2005: [{ text: 'Spawned on 21 Sep' }],
+  2009: [{ text: 'LKG' }],
+  2010: [{ text: 'UKG' }],
+  2011: [{ text: 'Class 1' }],
+  2013: [{ text: 'First real interest in tech' }],
+  2015: [{ text: "Inherited my grandfather's old laptop" }],
+  2019: [{ text: 'COVID-19' }],
+  2020: [{ text: 'Finished Class 10' }],
+  2021: [{ text: 'PUC - PCMC with Computer Science' }],
+  2023: [
+    {
+      text: 'Started BTech ISE at NMAMIT',
+      photo: kurtaWall,
+      alt: 'Srujan in a white kurta outside a village house',
+    },
+  ],
+  2024: [{ text: 'New laptop. Things got serious' }],
+  2025: [{ text: 'Organized Cipher Chase at College Fest' }],
+  2026: [
+    {
+      month: 'Apr',
+      text: 'Internship at Comcent.io - built a SIP phone in Flutter',
+      photo: ghatsRoad,
+      alt: 'Srujan on a hill road in the Western Ghats',
+    },
+  ],
+  2027: [{ text: 'BTech graduation' }, { month: 'Aug', text: 'Joining' }],
 };
 
-// Generates an array of strictly continuous years with no omissions
-const timelineData = Array.from({ length: currentYear - startYear + 1 }, (_, i) => {
+// Every year from birth to graduation - continuous, no gaps.
+const endYear = Math.max(currentYear, ...Object.keys(milestones).map(Number));
+const timeline = Array.from({ length: endYear - startYear + 1 }, (_, i) => {
   const year = startYear + i;
-  let event = timelineEvents[year] || "";
-  if (year === currentYear) {
-    event = `${todayLabel} • Loading •••`;
-  }
-  return { year, event };
+  return { year, events: milestones[year] ?? [], future: year > currentYear };
 });
 
+const gallery = [
+  { src: ghatsWide, alt: 'Srujan in the Western Ghats with mountains behind', caption: 'Agumbe, the good kind of offline', span: 'sm:col-span-2' },
+  { src: throne, alt: 'Srujan sitting in an ornate wooden chair', caption: 'Found a throne. Sat in it', span: '' },
+];
 ---
 
-<Layout title="Srujan M Padmashali | Profile">
-  <header class="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 mb-8 sm:mb-14">
-    <img data-intro-trigger="profile" src="/profile.jpg" alt="Profile Image" class="w-24 h-24 rounded-full grayscale border-2 border-zinc-900 dark:border-zinc-100 object-cover shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(24,24,27,0.18)] dark:hover:shadow-[0_10px_24px_rgba(0,0,0,0.45)]" />
-    <div class="space-y-3">
-      <h1 class="text-2xl font-bold uppercase tracking-wider">Srujan M Padmashali</h1>
-      <p class="text-sm text-zinc-600 dark:text-zinc-400">Software Developer</p>
-      <div class="flex gap-4 text-sm">
-        <a href="mailto:srujanmpadmashali@gmail.com" class="hover:underline">Email</a>
-        <a href="https://github.com/srujanmp" target="_blank" class="hover:underline">GitHub</a>
-        <a href="https://linkedin.com/in/srujanmpadmashali" target="_blank" class="hover:underline">LinkedIn</a>
+<Layout title="Srujan M Padmashali - Backend Developer">
+  <!-- ====================== HERO ====================== -->
+  <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center pt-4 pb-20 sm:pb-28">
+    <div class="lg:col-span-7 order-2 lg:order-1">
+      <p class="eyebrow mb-5" data-rise="1">Backend · System design · Bengaluru, IN</p>
+
+      <h1 class="display text-[clamp(2.75rem,9vw,5.5rem)] text-ink mb-6" data-rise="2">
+        Srujan M<br /><span class="text-accent">Padmashali</span>
+      </h1>
+
+      <p class="text-lg sm:text-xl text-ink-2 leading-relaxed max-w-xl mb-8" data-rise="3">
+        I build backend systems that hold under load - mostly in
+        <span class="text-ink font-medium">Node.js</span>. Microservices, Devops,
+        Design, Books and the occasional game engine when I get bored.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3" data-rise="4">
+        <a
+          href="/projects"
+          data-astro-prefetch="hover"
+          class="inline-flex items-center gap-2 bg-ink text-canvas px-5 py-2.5 rounded-full mono text-[13px] hover:bg-accent transition-colors duration-300"
+        >
+          See my work
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="mailto:srujanmpadmashali@gmail.com" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">Email</a>
+        <a href="https://github.com/srujanmp" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">GitHub</a>
+        <a href="https://linkedin.com/in/srujanmpadmashali" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">LinkedIn</a>
+        <a href="https://leetcode.com/u/srujanmpadmashali" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">LeetCode</a>
       </div>
     </div>
-  </header>
 
-  <section class="mb-8 sm:mb-14">
-    <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">About</h2>
-    <p class="leading-relaxed text-base">
-      Hey, I'm Srujan. I build backend systems and tinker with full-stack apps. I'm usually writing Go or Node.js, trying to make things run a little faster and scale a little better. When I'm not debugging microservices or tweaking sockets, I'm probably working on random side quests. Keep it simple, make it work.
-    </p>
-  </section>
-
-  <section class="mb-8 sm:mb-14">
-    <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-4 uppercase">Education</h2>
-    <div class="mb-4">
-      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-0.5 sm:gap-2">
-        <h3 class="font-bold text-sm">BTech in Information Science and Engineering</h3>
-        <span class="text-xs text-zinc-500 dark:text-zinc-400 sm:text-inherit sm:shrink-0">2023 - 2027</span>
-      </div>
-      <p class="text-sm text-zinc-600 dark:text-zinc-400">NMAM Institute of Technology | CGPA: 9</p>
-    </div>
-  </section>
-
-  <section id="history" class="mt-2">
-    <h2 class="text-lg font-bold border-b border-zinc-300 dark:border-zinc-700 pb-2 mb-8 uppercase">Timeline</h2>
-
-    <div id="history-timeline" class="history-timeline">
-      <div class="history-line-bg"></div>
-
-      <div id="timeline-progress" class="history-line-progress"></div>
-
-      <div id="timeline-circle" class="history-highlight-circle"></div>
-
-      <div class="history-rows">
-        {timelineData.map((item) => (
-          <article class="history-row" data-year={item.year}>
-            <div class="history-year">
-              <span class="year-text">{item.year}</span>
-            </div>
-            <div class="history-event">
-              {item.event && <span class="event-text">{item.event}</span>}
-            </div>
-          </article>
-        ))}
+    <div class="lg:col-span-5 order-1 lg:order-2" data-rise="2">
+      <div class="relative max-w-[300px] sm:max-w-[340px] mx-auto lg:mx-0 lg:ml-auto">
+        <div class="frame-offset">
+          <div class="frame aspect-[3/4]">
+            <Image
+              src={portraitGreen}
+              alt="Srujan M Padmashali"
+              widths={[340, 680]}
+              sizes="(max-width: 1024px) 340px, 340px"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+        <p class="mono text-[11px] text-ink-3 mt-5 lg:text-right">
+          <span class="text-accent">◆</span> Udupi, Karnataka
+        </p>
       </div>
     </div>
   </section>
 
-  <style is:inline>
-    .history-timeline {
-      position: relative;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem 0;
-    }
+  <!-- ====================== STACK MARQUEE ====================== -->
+  <section class="border-y border-line py-4 -mx-5 sm:-mx-8 px-0 mb-20 sm:mb-28" aria-label="Technology stack">
+    <div class="marquee">
+      {
+        [0, 1].map((copy) => (
+          <div class="marquee__track" aria-hidden={copy === 1 ? 'true' : undefined}>
+            {stack.map((item) => (
+              <span class="mono text-[13px] text-ink-2 whitespace-nowrap flex items-center gap-2.5">
+                {item}
+                <span class="text-accent/50" aria-hidden="true">/</span>
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </section>
 
-    .history-line-bg {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      transform: translateX(-50%);
-      background: rgba(120, 120, 130, 0.2);
-    }
+  <!-- ====================== ABOUT ====================== -->
+  <section class="mb-20 sm:mb-28" data-reveal>
+    <SectionHeading label="About" />
 
-    .history-line-progress {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 2px;
-      height: 0; /* Controlled dynamically by scroll */
-      transform: translateX(-50%);
-      background: #e4c78f;
-      z-index: 1;
-    }
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+      <div class="md:col-span-7 space-y-5">
+        <p class="text-lg leading-relaxed text-ink-2">
+          Hey, I'm Srujan. I'm a final-year student who spends most of his time
+          pondering problems - and creating new ones. I think in terms of system
+          design, picking up new technologies and adapting to a changing world.
+        </p>
+        <p class="text-base leading-relaxed text-ink-2">
+          I like measurable change. Taking applications all the way to production
+          is the part I'm most interested in.
+        </p>
+        <p class="text-base leading-relaxed text-ink-2">
+          Outside that, I'm learning new tools and reading programming books.
+        </p>
+        <p class="text-base leading-relaxed text-ink-2">
+          I keep it simple, make it work, then make it fast.
+        </p>
 
-    .dark .history-line-progress {
-      background: #8ac7ed;
-    }
-
-    .history-highlight-circle {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      transform: translate(-50%, 0);
-      background: #ffe49a;
-      box-shadow: 0 0 0 4px rgba(255, 200, 77, 0.2), 0 0 16px rgba(255, 200, 77, 0.8);
-      z-index: 2;
-      will-change: transform;
-    }
-
-    .dark .history-highlight-circle {
-      background: #daf1ff;
-      box-shadow: 0 0 0 4px rgba(96, 190, 255, 0.2), 0 0 16px rgba(96, 190, 255, 0.8);
-    }
-
-    .history-rows {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      z-index: 3;
-    }
-
-    .history-row {
-      display: flex;
-      min-height: 80px; /* Enforces equal vertical distance for every single year */
-      width: 100%;
-      align-items: center;
-    }
-
-    .history-year {
-      width: 50%;
-      text-align: right;
-      padding-right: 2.5rem;
-    }
-
-    .year-text {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 700;
-      font-size: 1.15rem;
-      color: #4f3816;
-      opacity: 0.3; /* Dimmed by default */
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      display: inline-block;
-    }
-
-    .dark .year-text {
-      color: #daf1ff;
-    }
-
-    .history-event {
-      width: 50%;
-      padding-left: 2.5rem;
-    }
-
-    .event-text {
-      display: inline-block;
-      font-size: 0.95rem;
-      color: rgb(63, 48, 27);
-      line-height: 1.4;
-      max-width: 350px;
-      padding: 0.6rem 1rem;
-      background: rgba(255, 245, 210, 0.6);
-      border-radius: 6px;
-      border: 1px solid rgba(122, 91, 44, 0.15);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .dark .event-text {
-      color: rgb(211, 226, 241);
-      background: rgba(26, 40, 52, 0.6);
-      border: 1px solid rgba(99, 156, 192, 0.3);
-    }
-
-    /* Active state when the circle reaches the year */
-    .history-row.active .year-text {
-      opacity: 1;
-      transform: scale(1.15);
-    }
-    .history-row.active .event-text {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      transform: translateY(-2px);
-    }
-
-    @media (max-width: 720px) {
-      .history-year { padding-right: 1.5rem; }
-      .history-event { padding-left: 1.5rem; }
-      .year-text { font-size: 0.95rem; }
-      .event-text { font-size: 0.85rem; padding: 0.5rem 0.8rem; }
-      .history-row { min-height: 70px; }
-    }
-  </style>
-
-  <script is:inline>
-    const setupScrollTimeline = () => {
-      const timeline = document.getElementById('history-timeline');
-      const lineBg = timeline?.querySelector('.history-line-bg');
-      const progressBar = document.getElementById('timeline-progress');
-      const circle = document.getElementById('timeline-circle');
-      const rows = document.querySelectorAll('.history-row');
-
-      if (!timeline || !lineBg || !progressBar || !circle) return;
-
-      let ticking = false;
-
-      const updateTimeline = () => {
-        const rect = timeline.getBoundingClientRect();
-        const viewportCenter = window.innerHeight / 2;
-
-        const totalHeight = lineBg.getBoundingClientRect().height;
-        let progress = viewportCenter - rect.top;
-        progress = Math.max(0, Math.min(progress, totalHeight));
-
-        progressBar.style.height = `${progress}px`;
-        circle.style.transform = `translate(-50%, ${progress}px)`;
-
-        rows.forEach((row) => {
-          const rowRect = row.getBoundingClientRect();
-          const rowCenter = rowRect.top + (rowRect.height / 2);
-
-          if (Math.abs(rowCenter - viewportCenter) < 60) {
-            row.classList.add('active');
-          } else {
-            row.classList.remove('active');
+        <dl class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-line border border-line mt-10 rounded overflow-hidden">
+          {
+            stats.map((stat) => (
+              <div class="bg-canvas px-4 py-5">
+                <dt class="mono text-[10px] uppercase tracking-[0.15em] text-ink-3 mb-2 leading-tight">{stat.label}</dt>
+                <dd class="display text-3xl text-ink">{stat.value}</dd>
+              </div>
+            ))
           }
-        });
+        </dl>
+      </div>
 
-        ticking = false;
-      };
+      <div class="md:col-span-5">
+        <div class="frame aspect-[6/5]" style="--focus:50% 100%">
+          <Image src={sofa} alt="Srujan sitting on a sofa" widths={[400, 800]} sizes="(max-width: 768px) 100vw, 400px" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
 
-      const onScroll = () => {
-        if (!ticking) {
-          window.requestAnimationFrame(updateTimeline);
-          ticking = true;
-        }
-      };
+  <!-- ====================== EDUCATION ====================== -->
+  <section class="mb-20 sm:mb-28" data-reveal>
+    <SectionHeading label="Education" />
 
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
+    <div class="flex flex-col gap-7">
+      {
+        education.map((item) => (
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 border-l-2 border-accent pl-6 py-1">
+            <div class="flex items-center gap-4 min-w-0">
+              <Image
+                src={item.logo}
+                alt=""
+                widths={[44, 88]}
+                sizes="44px"
+                loading="lazy"
+                class="w-11 h-11 object-contain shrink-0"
+              />
+              <div class="min-w-0">
+                <h3 class="text-xl text-ink font-medium mb-1">{item.course}</h3>
+                <p class="text-ink-2">{item.school}</p>
+              </div>
+            </div>
+            <div class="sm:text-right shrink-0 pl-15 sm:pl-0">
+              <p class="mono text-[13px] text-ink-2">{item.years}</p>
+              <p class="mono text-[13px] text-accent">{item.score}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 
-      // Initialize state on load
-      updateTimeline();
+  <!-- ====================== TIMELINE ====================== -->
+  <section class="mb-20 sm:mb-28" id="timeline">
+    <SectionHeading label="Timeline" />
+
+    <div id="timeline-rail" class="relative">
+      <!-- vertical rail, centred in the gutter between the year and event columns -->
+      <div class="timeline-line absolute top-0 bottom-0 w-px bg-line-2" aria-hidden="true"></div>
+      <div id="timeline-progress" class="timeline-line absolute top-0 w-px bg-accent" style="height:0" aria-hidden="true"></div>
+
+      {
+        timeline.map((item) => (
+          <article
+            class={`timeline-row relative grid grid-cols-[3.5rem_1fr] gap-x-8 items-center ${
+              item.events.length ? 'py-3.5' : 'py-1'
+            }`}
+            data-year={item.year}
+          >
+            <span
+              class={`timeline-year mono text-[13px] tabular-nums text-right transition-colors duration-300 ${
+                item.events.length ? 'text-ink-2' : 'text-ink-3/45'
+              }`}
+            >
+              {item.year}
+            </span>
+
+            <span
+              class={`timeline-dot absolute rounded-full bg-line-2 transition-all duration-300 ${
+                item.events.length ? 'w-2 h-2' : 'w-1 h-1'
+              }`}
+              aria-hidden="true"
+            />
+
+            {item.events.length ? (
+              <div class="flex flex-col gap-2.5 min-w-0">
+                {item.events.map((event, eventIndex) => (
+                  <div class="flex items-center gap-4 min-w-0">
+                    {event.photo && (
+                      <div class="frame w-14 h-[4.5rem] sm:w-16 sm:h-20 shrink-0">
+                        <Image src={event.photo} alt={event.alt ?? ''} widths={[64, 128]} sizes="64px" loading="lazy" />
+                      </div>
+                    )}
+                    <p class={`text-base leading-snug ${item.future ? 'text-ink-3' : 'text-ink'}`}>
+                      {event.month && <span class="mono text-[11px] text-ink-3 mr-2">{event.month}</span>}
+                      {event.text}
+                      {item.future && eventIndex === 0 && (
+                        <span class="mono text-[11px] text-accent ml-2">upcoming</span>
+                      )}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <span />
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ====================== ACHIEVEMENTS ====================== -->
+  <section class="mb-20 sm:mb-28" data-reveal>
+    <SectionHeading label="Achievements" />
+
+    <ul class="flex flex-col gap-4">
+      {
+        achievements.map((item) => (
+          <li class="flex gap-4 items-baseline">
+            <span class="text-accent shrink-0" aria-hidden="true">◆</span>
+            <span class="text-base leading-relaxed text-ink-2">{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- ====================== GALLERY ====================== -->
+  <section data-reveal>
+    <SectionHeading label="Off the clock" />
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      {
+        gallery.map((shot) => (
+          <figure class={shot.span}>
+            <div class={`frame ${shot.span ? 'aspect-[16/10]' : 'aspect-[3/4]'}`}>
+              <Image src={shot.src} alt={shot.alt} widths={[400, 800, 1200]} sizes="(max-width: 640px) 100vw, 45vw" loading="lazy" />
+            </div>
+            <figcaption class="mono text-[11px] text-ink-3 mt-3">{shot.caption}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Year column is 3.5rem, gutter is 2rem → rail sits at 4.5rem. */
+  .timeline-line {
+    left: 4.5rem;
+  }
+
+  .timeline-dot {
+    left: calc(4.5rem - 0.25rem);
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  /* Filler years use the smaller 1rem dot, so re-centre it. */
+  .timeline-row:not(:has(p)) .timeline-dot {
+    left: calc(4.5rem - 0.125rem);
+  }
+
+  .timeline-row.is-active .timeline-year {
+    color: var(--color-accent);
+  }
+
+  .timeline-row.is-active .timeline-dot {
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-accent-soft);
+  }
+</style>
+
+<script>
+  const setupTimeline = () => {
+    const rail = document.getElementById('timeline-rail');
+    const progress = document.getElementById('timeline-progress');
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('.timeline-row'));
+
+    if (!rail || !progress || !rows.length) return;
+
+    let queued = false;
+
+    const update = () => {
+      queued = false;
+      const rect = rail.getBoundingClientRect();
+      const anchor = window.innerHeight * 0.45;
+
+      const filled = Math.max(0, Math.min(anchor - rect.top, rect.height));
+      progress.style.height = `${filled}px`;
+
+      const cutoff = rect.top + filled;
+      for (const row of rows) {
+        const rowRect = row.getBoundingClientRect();
+        const center = rowRect.top + rowRect.height / 2;
+        row.classList.toggle('is-active', center <= cutoff + 8 && center >= cutoff - 48);
+      }
     };
 
-    document.addEventListener('DOMContentLoaded', setupScrollTimeline);
-    document.addEventListener('astro:page-load', setupScrollTimeline);
-  </script>
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    };
 
-  <div class="h-[50vh]" aria-hidden="true"></div>
-</Layout>
+    window.__timelineCleanup?.();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    window.__timelineCleanup = () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+
+    update();
+  };
+
+  document.addEventListener('astro:page-load', setupTimeline);
+</script>

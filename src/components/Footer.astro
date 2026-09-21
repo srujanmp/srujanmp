@@ -1,0 +1,45 @@
+---
+const links = [
+  { href: 'mailto:srujanmpadmashali@gmail.com', label: 'Email' },
+  { href: 'https://github.com/srujanmp', label: 'GitHub' },
+  { href: 'https://linkedin.com/in/srujanmpadmashali', label: 'LinkedIn' },
+  { href: 'https://leetcode.com/u/srujanmpadmashali', label: 'LeetCode' },
+  { href: 'https://wa.me/918105302470', label: 'WhatsApp' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line pt-10 pb-12 mt-auto">
+  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
+    <div>
+      <a
+        href="mailto:srujanmpadmashali@gmail.com"
+        class="display text-3xl sm:text-4xl text-ink hover:text-accent transition-colors duration-300"
+      >
+        Let's build something.
+      </a>
+    </div>
+
+    <ul class="flex flex-wrap gap-x-6 gap-y-2 shrink-0">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              target={link.href.startsWith('http') ? '_blank' : undefined}
+              rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors duration-200"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <p class="mono text-[11px] text-ink-3 mt-10">
+    © {year} Srujan M Padmashali
+  </p>
+</footer>

@@ -1,42 +1,62 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
 
 const allBlogs = await getCollection('blog');
 allBlogs.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-const renderedBlogs = await Promise.all(
-  allBlogs.map(async (post) => {
-    const { Content } = await render(post);
-    return { post, Content };
-  })
+const rendered = await Promise.all(
+  allBlogs.map(async (post) => ({ post, Content: (await render(post)).Content }))
 );
+
+const formatDate = (value: string) => {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+};
 ---
 
-<Layout title="Blog | Srujan M Padmashali">
-  <h1 class="text-2xl font-bold uppercase tracking-wider mb-8">Blog</h1>
+<Layout
+  title="Blog - Srujan M Padmashali"
+  description="Occasional notes on backend work, side projects and things I learned the hard way."
+>
+  <header class="pt-4 pb-14 sm:pb-20">
+    <p class="eyebrow mb-5" data-rise="1">Notes &amp; write-ups</p>
+    <h1 class="display text-[clamp(2.5rem,8vw,4.5rem)] text-ink mb-6" data-rise="2">Blog</h1>
+    <p class="text-lg text-ink-2 max-w-2xl leading-relaxed" data-rise="3">
+      Irregularly updated. Mostly things I wish I'd found in a search result
+      when I was stuck.
+    </p>
+  </header>
 
-  <div class="flex flex-col gap-10">
-    {renderedBlogs.length === 0 ? (
-      <article class="border border-zinc-300 dark:border-zinc-700 p-6">
-        <p class="text-sm text-zinc-600 dark:text-zinc-400">No blog posts yet. Add an MDX file in src/content/blog to publish one.</p>
-      </article>
+  {
+    rendered.length === 0 ? (
+      <div class="border-t border-line py-16 text-center">
+        <p class="mono text-[13px] text-ink-3">Nothing published yet. Check back soon.</p>
+      </div>
     ) : (
-      renderedBlogs.map(({ post, Content }) => (
-        <article class="border border-white/45 dark:border-white/12 rounded-lg p-6 bg-white/20 dark:bg-zinc-900/22 backdrop-blur-md shadow-[0_10px_24px_rgba(30,30,30,0.10)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.38)] hover:shadow-[0_14px_30px_rgba(30,30,30,0.16)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.52)] transition-all duration-300 ease-out hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none">
-          <header class="border-b border-zinc-300 dark:border-zinc-700 pb-3 mb-4">
-            <h2 class="font-bold text-lg">{post.data.title}</h2>
-            <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">{post.data.date}</p>
-            {post.data.summary && (
-              <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">{post.data.summary}</p>
-            )}
-          </header>
+      <div class="flex flex-col">
+        {rendered.map(({ post, Content }) => (
+          <article class="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-4 py-10 sm:py-14 border-t border-line" data-reveal>
+            <div class="md:col-span-3">
+              <p class="mono text-[13px] text-accent">{formatDate(post.data.date)}</p>
+            </div>
 
-          <div class="prose prose-sm dark:prose-invert max-w-none marker:text-zinc-900 dark:marker:text-zinc-100">
-            <Content />
-          </div>
-        </article>
-      ))
-    )}
-  </div>
+            <div class="md:col-span-9">
+              <h2 class="display text-2xl sm:text-3xl text-ink leading-tight mb-3">{post.data.title}</h2>
+
+              {post.data.summary && (
+                <p class="text-ink-2 leading-relaxed mb-6 max-w-2xl">{post.data.summary}</p>
+              )}
+
+              <div class="prose prose-sm prose-ink max-w-none">
+                <Content />
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
 </Layout>

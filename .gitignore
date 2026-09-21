@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# raw photo originals (working copies live in src/assets/photos)
+images_raw/

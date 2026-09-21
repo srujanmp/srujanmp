@@ -1,655 +1,89 @@
 ---
 import '../styles/global.css';
-import Navbar from '../components/Navbar.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import InkTrail from '../components/InkTrail.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import { ClientRouter } from 'astro:transitions';
-const { title } = Astro.props;
+
+interface Props {
+  title: string;
+  description?: string;
+  wide?: boolean;
+}
+
+const {
+  title,
+  description = 'Srujan M Padmashali - backend and full-stack developer. Go, Node.js, distributed systems, and the occasional game engine.',
+  wide = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://srujanmp.pages.dev');
 ---
 
+<!doctype html>
 <html lang="en">
   <head>
-    <!-- Must be first: applies dark class before any CSS paint to prevent flash -->
-    <script is:inline>
-      (function () {
-        try {
-          var t = localStorage.getItem('theme');
-          var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (dark) {
-            document.documentElement.classList.add('dark');
-            document.documentElement.style.colorScheme = 'dark';
-          }
-        } catch (_) {}
-      })();
-
-      if (!window.__themeBeforeSwapBound) {
-        window.__themeBeforeSwapBound = true;
-        document.addEventListener('astro:before-swap', function (e) {
-          try {
-            var t = localStorage.getItem('theme');
-            var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            e.newDocument.documentElement.classList.toggle('dark', dark);
-            e.newDocument.documentElement.style.colorScheme = dark ? 'dark' : 'light';
-          } catch (_) {}
-        });
-      }
-    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <ClientRouter />
-    <style is:inline>
-      :root {
-        background-color: #efe3c4;
-        background-image:
-          radial-gradient(circle at 13% 16%, rgba(196, 125, 52, 0.2) 0%, rgba(196, 125, 52, 0) 35%),
-          radial-gradient(circle at 86% 79%, rgba(170, 102, 44, 0.18) 0%, rgba(170, 102, 44, 0) 40%),
-          radial-gradient(circle at 52% 9%, rgba(255, 250, 232, 0.52) 0%, rgba(255, 250, 232, 0) 30%),
-          radial-gradient(circle at 60% 56%, rgba(255, 225, 168, 0.14) 0%, rgba(255, 225, 168, 0) 44%),
-          linear-gradient(180deg, #faefd5 0%, #eddcb1 48%, #dfc791 100%);
-        color: #18181b;
-        color-scheme: light;
-      }
-
-      html.dark {
-        background-color: #0f1014;
-        background-image:
-          radial-gradient(circle at 14% 18%, rgba(88, 113, 189, 0.2) 0%, rgba(88, 113, 189, 0) 34%),
-          radial-gradient(circle at 84% 78%, rgba(27, 167, 157, 0.18) 0%, rgba(27, 167, 157, 0) 38%),
-          radial-gradient(circle at 48% 10%, rgba(196, 156, 255, 0.14) 0%, rgba(196, 156, 255, 0) 28%),
-          linear-gradient(180deg, #191c24 0%, #141821 48%, #0f1014 100%);
-        color: #f4f4f5;
-        color-scheme: dark;
-      }
-
-      html,
-      body {
-        background-color: inherit;
-        background-image: inherit;
-        background-attachment: fixed;
-        color: inherit;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-
-      html,
-      body,
-      a,
-      button,
-      input,
-      textarea,
-      select,
-      label,
-      [role='button'] {
-        cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23eee1bf'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%23eee1bf'/%3E%3C/g%3E%3C/svg%3E") 16 24, auto;
-      }
-
-      html.dark,
-      html.dark body,
-      html.dark a,
-      html.dark button,
-      html.dark input,
-      html.dark textarea,
-      html.dark select,
-      html.dark label,
-      html.dark [role='button'] {
-        cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%231A1A1A'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%231A1A1A'/%3E%3C/g%3E%3C/svg%3E") 16 24, auto;
-      }
-
-      #pen-cursor {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 32px;
-        height: 32px;
-        pointer-events: none;
-        z-index: 1001;
-        opacity: 0;
-        transform: translate(-50%, -50%);
-      }
-
-      body.pen-cursor-ready #pen-cursor {
-        opacity: 1;
-      }
-
-      #pen-cursor-icon {
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23000000'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23eee1bf'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%23eee1bf'/%3E%3C/g%3E%3C/svg%3E");
-        transform: scale(1);
-        transition: transform 170ms cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      html.dark #pen-cursor-icon {
-        background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='translate(32 0) scale(-1 1) rotate(215 16 16)'%3E%3Cpath d='M16 3L24 11L16 29L8 11Z' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%231A1A1A'/%3E%3Cpath d='M16 13L17.2 18.5L16 21L14.8 18.5Z' fill='%231A1A1A'/%3E%3C/g%3E%3C/svg%3E");
-      }
-
-      body.pen-over-link #pen-cursor-icon {
-        transform: scale(1.38);
-      }
-
-      @media (pointer: fine) {
-        html,
-        body,
-        a,
-        button,
-        input,
-        textarea,
-        select,
-        label,
-        [role='button'] {
-          cursor: none !important;
+    <!-- Marks JS as available so scroll-reveal never hides content without it.
+         The failsafe reveals everything if ScrollReveal never reports in, so a
+         failed script can never leave the page body blank. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!window.__revealReady) {
+          document.documentElement.classList.add('reveal-failsafe');
         }
-      }
+      }, 2500);
 
-      @media (pointer: coarse) {
-        #pen-cursor,
-        #pencil-canvas {
-          display: none !important;
-        }
-
-        html,
-        body,
-        a,
-        button,
-        input,
-        textarea,
-        select,
-        label,
-        [role='button'] {
-          cursor: auto !important;
-        }
-      }
-
-      @media (max-width: 640px) {
-        body {
-          font-size: 13px;
-        }
-      }
-
-      #pencil-canvas {
-        position: fixed;
-        inset: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
-        z-index: 999;
-      }
-
-      #intro-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 2100;
-        display: grid;
-        place-items: center;
-        background: rgba(248, 236, 208, 0.26);
-        backdrop-filter: blur(12px) saturate(120%);
-        -webkit-backdrop-filter: blur(12px) saturate(120%);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 420ms ease;
-      }
-
-      html.dark #intro-overlay {
-        background: rgba(10, 12, 19, 0.38);
-      }
-
-      body.intro-active #intro-overlay {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      #intro-overlay.intro-fade-out {
-        opacity: 0;
-      }
-
-      #intro-title {
-        font-size: clamp(1.4rem, 5vw, 3.2rem);
-        letter-spacing: 0.18em;
-        font-weight: 700;
-        text-transform: uppercase;
-        text-align: center;
-        padding: 0 1rem;
-      }
-
-      #intro-title::after {
-        content: '';
-        display: inline-block;
-        width: 2px;
-        height: 1em;
-        margin-left: 0.22em;
-        vertical-align: -0.08em;
-        background: currentColor;
-        animation: introCaretBlink 900ms steps(1, end) infinite;
-      }
-
-      @keyframes introCaretBlink {
-        0%,
-        45% {
-          opacity: 1;
-        }
-
-        46%,
-        100% {
-          opacity: 0;
-        }
-      }
-
-      html {
-        scroll-behavior: smooth;
-        /* Reserves space for the scrollbar so it never shifts layout */
-        scrollbar-gutter: stable;
-      }
-
-      @keyframes pageFadeLift {
-        from {
-          opacity: 0;
-          transform: translateY(14px);
-          filter: blur(3px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-          filter: blur(0);
-        }
-      }
-
-      main :where(nav, header, h1, section, article) {
-        opacity: 0;
-        animation: pageFadeLift 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        will-change: transform, opacity, filter;
-      }
-
-      main nav {
-        animation-duration: 480ms;
-      }
-
-      main :where(header, h1) {
-        animation-delay: 70ms;
-      }
-
-      main :where(section, article) {
-        animation-delay: 130ms;
-      }
-
-      main article:nth-of-type(2),
-      main section:nth-of-type(2) {
-        animation-delay: 180ms;
-      }
-
-      main article:nth-of-type(3),
-      main section:nth-of-type(3) {
-        animation-delay: 230ms;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
-        main :where(nav, header, h1, section, article) {
-          opacity: 1;
-          animation: none;
-          filter: none;
-        }
-      }
-
-      /* Sequence the transition: old fades OUT fully, then new fades IN.
-         This avoids the two pages overlapping at partial opacity, which
-         would bleed through to the white browser background. */
-      @keyframes vt-fade-out { to   { opacity: 0; } }
-      @keyframes vt-fade-in  { from { opacity: 0; } }
-
-      ::view-transition-old(root) {
-        animation: 150ms ease-in vt-fade-out forwards;
-      }
-
-      ::view-transition-new(root) {
-        animation: 200ms ease-out vt-fade-in 150ms backwards;
-      }
-    </style>
-    <script>
-      const getPreferredTheme = () => {
-        if (typeof localStorage !== 'undefined') {
-          const storedTheme = localStorage.getItem('theme');
-          if (storedTheme === 'light' || storedTheme === 'dark') {
-            return storedTheme;
-          }
-        }
-
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-
-      const applyTheme = (theme) => {
-        const root = document.documentElement;
-        root.classList.toggle('dark', theme === 'dark');
-        root.style.colorScheme = theme;
-        localStorage.setItem('theme', theme);
-
-        const icon = document.getElementById('theme-icon');
-        if (icon) {
-          icon.textContent = theme === 'dark' ? '☾' : '☀';
-        }
-      };
-
-      const setupThemeToggle = () => {
-        const button = document.getElementById('theme-toggle');
-        applyTheme(getPreferredTheme());
-
-        if (!button) return;
-
-        button.onclick = () => {
-          const currentlyDark = document.documentElement.classList.contains('dark');
-          applyTheme(currentlyDark ? 'light' : 'dark');
-        };
-      };
-
-      const setupIntroOverlay = () => {
-        const introKey = 'intro-overlay-seen-v1';
-        const text = 'SRUJAN M PADMASHALI';
-        const stepMs = 85;
-        window.__playIntroOverlay = (markSeen) => {
-          const overlay = document.getElementById('intro-overlay');
-          const title = document.getElementById('intro-title');
-          if (!(overlay instanceof HTMLElement) || !(title instanceof HTMLElement)) return;
-
-          if (window.__introOverlayPlaying) return;
-          window.__introOverlayPlaying = true;
-
-          let index = 0;
-          overlay.hidden = false;
-          overlay.classList.remove('intro-fade-out');
-          document.body.classList.add('intro-active');
-          title.textContent = '';
-
-          const typeNext = () => {
-            if (index <= text.length) {
-              title.textContent = text.slice(0, index);
-              index += 1;
-              window.setTimeout(typeNext, stepMs);
-              return;
-            }
-
-            if (markSeen) {
-              localStorage.setItem(introKey, '1');
-            }
-
-            window.setTimeout(() => {
-              overlay.classList.add('intro-fade-out');
-              window.setTimeout(() => {
-                overlay.hidden = true;
-                overlay.classList.remove('intro-fade-out');
-                document.body.classList.remove('intro-active');
-                window.__introOverlayPlaying = false;
-              }, 420);
-            }, 650);
-          };
-
-          typeNext();
-        };
-
-        const hasSeenIntro = localStorage.getItem(introKey) === '1';
-        if (!hasSeenIntro) {
-          window.__playIntroOverlay(true);
-        } else {
-          const overlay = document.getElementById('intro-overlay');
-          if (overlay instanceof HTMLElement) {
-            overlay.classList.remove('intro-fade-out');
-          }
-          overlay.hidden = true;
-          document.body.classList.remove('intro-active');
-        }
-
-        if (window.__introOverlayClickBound) return;
-        window.__introOverlayClickBound = true;
-
-        document.addEventListener('click', (event) => {
-          if (!(event.target instanceof Element)) return;
-          if (!event.target.closest('[data-intro-trigger="profile"]')) return;
-          window.__playIntroOverlay(false);
+      // Firefox ignores -webkit-user-drag, so stop the drag itself.
+      if (!window.__noDragBound) {
+        window.__noDragBound = true;
+        document.addEventListener('dragstart', function (event) {
+          var el = event.target;
+          if (el && el.closest && el.closest('img, svg, canvas')) event.preventDefault();
         });
-      };
-
-      const teardownPencilDraw = () => {
-        const existingState = window.__pencilDrawState;
-        if (!existingState) return;
-
-        window.removeEventListener('resize', existingState.resizeCanvas);
-        window.removeEventListener('pointerdown', existingState.onPointerDown);
-        window.removeEventListener('pointermove', existingState.onPointerMove);
-        window.removeEventListener('pointermove', existingState.onPointerMoveCursor);
-        window.removeEventListener('pointerover', existingState.onPointerOverLink);
-        window.removeEventListener('pointerout', existingState.onPointerOutLink);
-        window.removeEventListener('pointerup', existingState.stopDrawing);
-        window.removeEventListener('pointercancel', existingState.stopDrawing);
-        window.removeEventListener('blur', existingState.stopDrawing);
-        cancelAnimationFrame(existingState.rafId);
-
-        window.__pencilDrawState = null;
-        document.body.classList.remove('pen-cursor-ready', 'pen-over-link');
-      };
-
-      const setupPencilDraw = () => {
-        const isFinePointer = window.matchMedia('(pointer: fine)').matches;
-        if (!isFinePointer) {
-          teardownPencilDraw();
-          return;
-        }
-
-        const canvas = document.getElementById('pencil-canvas');
-        if (!(canvas instanceof HTMLCanvasElement)) return;
-        const penCursor = document.getElementById('pen-cursor');
-
-        const existingState = window.__pencilDrawState;
-        if (existingState?.canvas === canvas) return;
-
-        if (existingState) teardownPencilDraw();
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        const lineLifetimeMs = 2100;
-        let isDrawing = false;
-        let lastX = 0;
-        let lastY = 0;
-        let lastMoveAt = performance.now();
-        let segments = [];
-        const tipOffsetX = -7;
-        const tipOffsetY = -11;
-        const inkTrailLerp = 0.42;
-
-        const resizeCanvas = () => {
-          const dpr = window.devicePixelRatio || 1;
-          canvas.width = Math.floor(window.innerWidth * dpr);
-          canvas.height = Math.floor(window.innerHeight * dpr);
-          canvas.style.width = `${window.innerWidth}px`;
-          canvas.style.height = `${window.innerHeight}px`;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        };
-
-        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-        const addSegment = (x1, y1, x2, y2, width) => {
-          segments.push({
-            x1,
-            y1,
-            x2,
-            y2,
-            createdAt: performance.now(),
-            width,
-          });
-        };
-
-        const tipPoint = (pageX, pageY) => ({
-          x: pageX + tipOffsetX,
-          y: pageY + tipOffsetY,
-        });
-
-        const onPointerDown = (event) => {
-          if (event.button !== 0) return;
-          if (document.body.classList.contains('pen-over-link')) return;
-          if (event.target instanceof Element && event.target.closest('a[href]')) return;
-          isDrawing = true;
-          lastMoveAt = performance.now();
-          const start = tipPoint(event.pageX, event.pageY);
-          lastX = start.x;
-          lastY = start.y;
-          addSegment(lastX, lastY, lastX + 0.01, lastY + 0.01, 2.1);
-        };
-
-        const onPointerMove = (event) => {
-          if (!isDrawing) return;
-          const target = tipPoint(event.pageX, event.pageY);
-          const nextX = lastX + (target.x - lastX) * inkTrailLerp;
-          const nextY = lastY + (target.y - lastY) * inkTrailLerp;
-
-          const now = performance.now();
-          const dt = Math.max(1, now - lastMoveAt);
-          const distance = Math.hypot(nextX - lastX, nextY - lastY);
-          const speed = distance / dt;
-          const nibWidth = clamp(2.6 - speed * 2.1, 0.95, 2.7);
-
-          addSegment(lastX, lastY, nextX, nextY, nibWidth);
-          lastMoveAt = now;
-          lastX = nextX;
-          lastY = nextY;
-        };
-
-        const stopDrawing = () => {
-          isDrawing = false;
-        };
-
-        const onPointerMoveCursor = (event) => {
-          if (!(penCursor instanceof HTMLElement)) return;
-          penCursor.style.left = `${event.clientX}px`;
-          penCursor.style.top = `${event.clientY}px`;
-          document.body.classList.add('pen-cursor-ready');
-        };
-
-        const onPointerOverLink = (event) => {
-          if (!(event.target instanceof Element)) return;
-          if (!event.target.closest('a[href]')) return;
-          stopDrawing();
-          document.body.classList.add('pen-over-link');
-        };
-
-        const onPointerOutLink = (event) => {
-          if (!(event.target instanceof Element)) return;
-          if (!event.target.closest('a[href]')) return;
-          const relatedTarget = event.relatedTarget;
-          if (relatedTarget instanceof Element && relatedTarget.closest('a[href]')) return;
-          document.body.classList.remove('pen-over-link');
-        };
-
-        const state = {
-          canvas,
-          rafId: 0,
-          resizeCanvas: null,
-          onPointerDown: null,
-          onPointerMove: null,
-          onPointerMoveCursor: null,
-          onPointerOverLink: null,
-          onPointerOutLink: null,
-          stopDrawing: null,
-        };
-
-        const render = (now) => {
-          const width = window.innerWidth;
-          const height = window.innerHeight;
-          const scrollX = window.scrollX;
-          const scrollY = window.scrollY;
-          ctx.clearRect(0, 0, width, height);
-
-          const darkMode = document.documentElement.classList.contains('dark');
-          const baseColor = darkMode ? '255,255,255' : '0,0,0';
-          segments = segments.filter((segment) => now - segment.createdAt <= lineLifetimeMs);
-
-          for (const segment of segments) {
-            const age = now - segment.createdAt;
-            const fade = Math.max(0, 1 - age / lineLifetimeMs);
-            const nibAngle = -0.6;
-            const offsetScale = segment.width * 0.3;
-            const offsetX = Math.cos(nibAngle + Math.PI / 2) * offsetScale;
-            const offsetY = Math.sin(nibAngle + Math.PI / 2) * offsetScale;
-
-            const x1 = segment.x1 - scrollX;
-            const y1 = segment.y1 - scrollY;
-            const x2 = segment.x2 - scrollX;
-            const y2 = segment.y2 - scrollY;
-
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            ctx.strokeStyle = `rgba(${baseColor}, ${0.32 * fade})`;
-            ctx.lineWidth = segment.width * 1.45;
-            ctx.beginPath();
-            ctx.moveTo(x1 - offsetX, y1 - offsetY);
-            ctx.lineTo(x2 - offsetX, y2 - offsetY);
-            ctx.stroke();
-
-            ctx.strokeStyle = `rgba(${baseColor}, ${0.78 * fade})`;
-            ctx.lineWidth = segment.width * 0.72;
-            ctx.beginPath();
-            ctx.moveTo(x1 + offsetX, y1 + offsetY);
-            ctx.lineTo(x2 + offsetX, y2 + offsetY);
-            ctx.stroke();
-
-            ctx.fillStyle = `rgba(${baseColor}, ${0.3 * fade})`;
-            ctx.beginPath();
-            ctx.arc(x2, y2, segment.width * 0.2, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          state.rafId = requestAnimationFrame(render);
-        };
-
-        state.resizeCanvas = resizeCanvas;
-        state.onPointerDown = onPointerDown;
-        state.onPointerMove = onPointerMove;
-        state.onPointerMoveCursor = onPointerMoveCursor;
-        state.onPointerOverLink = onPointerOverLink;
-        state.onPointerOutLink = onPointerOutLink;
-        state.stopDrawing = stopDrawing;
-        window.__pencilDrawState = state;
-
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas, { passive: true });
-        window.addEventListener('pointerdown', onPointerDown, { passive: true });
-        window.addEventListener('pointermove', onPointerMove, { passive: true });
-        window.addEventListener('pointermove', onPointerMoveCursor, { passive: true });
-        window.addEventListener('pointerover', onPointerOverLink, { passive: true });
-        window.addEventListener('pointerout', onPointerOutLink, { passive: true });
-        window.addEventListener('pointerup', stopDrawing, { passive: true });
-        window.addEventListener('pointercancel', stopDrawing, { passive: true });
-        window.addEventListener('blur', stopDrawing, { passive: true });
-        state.rafId = requestAnimationFrame(render);
-      };
-
-      applyTheme(getPreferredTheme());
-
-      document.addEventListener('DOMContentLoaded', () => {
-        setupThemeToggle();
-        setupPencilDraw();
-        setupIntroOverlay();
-      });
-      document.addEventListener('astro:page-load', () => {
-        setupThemeToggle();
-        setupPencilDraw();
-        setupIntroOverlay();
-      });
+      }
     </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <meta name="theme-color" content="#f4f1e8" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Srujan M Padmashali" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <ClientRouter />
   </head>
-  <body class="text-zinc-900 dark:text-zinc-100 font-['3270NerdFont'] text-[14px] sm:text-[17px] lg:text-[19px] antialiased min-h-screen">
-    <div id="intro-overlay" aria-hidden="true" hidden>
-      <div id="intro-title"></div>
+
+  <body class="min-h-screen flex flex-col">
+    <InkTrail />
+    <ScrollReveal />
+
+    <div
+      class={`relative z-10 w-full mx-auto px-5 sm:px-8 flex-1 flex flex-col ${wide ? 'max-w-6xl' : 'max-w-5xl'}`}
+    >
+      <Nav />
+      <main class="flex-1 pb-24">
+        <slot />
+      </main>
+      <Footer />
     </div>
-    <div id="pen-cursor" aria-hidden="true"><div id="pen-cursor-icon"></div></div>
-    <main class="w-[92%] sm:w-[88%] lg:w-[80%] mx-auto py-8 sm:py-10 lg:py-12">
-      <Navbar transition:persist="navbar" />
-      <slot />
-    </main>
-    <canvas id="pencil-canvas" aria-hidden="true"></canvas>
   </body>
 </html>

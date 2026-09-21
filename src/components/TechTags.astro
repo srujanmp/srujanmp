@@ -1,0 +1,24 @@
+---
+import { techColor } from '../lib/tech';
+
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="flex flex-wrap gap-x-2 gap-y-2 list-none p-0 m-0" aria-label="Technologies used">
+  {
+    items.map((tech) => (
+      <li class="inline-flex items-center gap-1.5 border border-line rounded-full pl-2 pr-3 py-1 bg-surface/70 transition-colors duration-200 hover:border-line-2">
+        <span
+          class="w-1.5 h-1.5 rounded-full shrink-0"
+          style={`background:${techColor(tech)}`}
+          aria-hidden="true"
+        />
+        <span class="mono text-[11px] text-ink-2 whitespace-nowrap">{tech}</span>
+      </li>
+    ))
+  }
+</ul>
