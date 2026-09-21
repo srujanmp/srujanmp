@@ -1,0 +1,115 @@
+---
+---
+
+<div id="apple-container" aria-hidden="true"></div>
+
+<div id="apple-counter" class="fixed bottom-4 right-4 flex items-center gap-1.5 bg-canvas-2 border border-line px-3 py-1.5 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+  <img src="/apple.gif" alt="Enchanted Apple" class="w-4 h-4 pixelated" />
+  <span class="mono text-ink font-medium text-[11px]">x <span id="apple-count">0</span></span>
+</div>
+
+<style>
+  :global(.enchanted-apple) {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 40;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Make it look like pixel art */
+    image-rendering: pixelated;
+    filter: drop-shadow(0 4px 12px rgba(194, 65, 12, 0.4));
+  }
+
+  :global(.enchanted-apple:hover) {
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  :global(.enchanted-apple.falling) {
+    /* Fall down and out of the screen */
+    pointer-events: none;
+    animation: apple-fall 1s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+  }
+
+  @keyframes apple-fall {
+    0% {
+      transform: translateY(0) rotate(5deg) scale(1.15);
+    }
+    20% {
+      transform: translateY(-40px) rotate(15deg) scale(1.15);
+    }
+    100% {
+      transform: translateY(100vh) rotate(180deg) scale(0.5);
+      opacity: 0;
+    }
+  }
+
+  .pixelated {
+    image-rendering: pixelated;
+  }
+</style>
+
+<script>
+  const setupApples = () => {
+    // Only run on the client
+    if (typeof window === 'undefined') return;
+
+    const container = document.getElementById('apple-container');
+    const counter = document.getElementById('apple-counter');
+    const countDisplay = document.getElementById('apple-count');
+    
+    if (!container || !counter || !countDisplay) return;
+
+    // Load count from local storage
+    let count = parseInt(localStorage.getItem('apple-count') || '0', 10);
+    
+    const updateCounter = () => {
+      if (count > 0) {
+        countDisplay.textContent = count.toString();
+        counter.classList.remove('opacity-0', 'pointer-events-none');
+      }
+    };
+
+    updateCounter();
+
+    // 35% chance to spawn 1 apple per load
+    if (Math.random() < 0.35) {
+      const apple = document.createElement('img');
+      apple.src = '/apple.gif';
+      apple.className = 'enchanted-apple';
+      
+      setTimeout(() => {
+        const maxX = document.documentElement.clientWidth - 64;
+        // Constrain to the first 2000px or total height (whichever is smaller) 
+        // so they don't hide at the very bottom of long pages
+        const limitY = Math.min(document.documentElement.scrollHeight - 200, 2000); 
+        
+        const x = Math.max(20, Math.floor(Math.random() * maxX));
+        const y = Math.max(100, Math.floor(Math.random() * limitY));
+        
+        apple.style.left = `${x}px`;
+        apple.style.top = `${y}px`;
+        
+        container.appendChild(apple);
+      }, 100);
+
+      // Collect apple
+      apple.addEventListener('click', () => {
+        if (apple.classList.contains('falling')) return;
+        
+        apple.classList.add('falling');
+        count++;
+        localStorage.setItem('apple-count', count.toString());
+        updateCounter();
+        
+        // Cleanup after animation
+        setTimeout(() => {
+          apple.remove();
+        }, 1000);
+      });
+    }
+  };
+
+  // Run on first load and page transitions
+  document.addEventListener('astro:page-load', setupApples);
+</script>

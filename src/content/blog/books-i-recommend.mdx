@@ -1,0 +1,27 @@
+---
+title: "Books I Recommend"
+date: "2026-09-22"
+---
+
+import { Image } from 'astro:assets';
+import cleanCodeCover from '../../assets/books/clean_code.jpg';
+import pragmaticCover from '../../assets/books/pragmatic_programmer.png';
+import thinkAndGrowRichCover from '../../assets/books/think_and_grow_rich.jpg';
+
+<div class="flex flex-wrap gap-6 mt-1">
+  <Image 
+    src={cleanCodeCover} 
+    alt="Clean Code" 
+    class="h-[160px] sm:h-[220px] w-auto shadow-sm border border-line bg-canvas-2 object-contain" 
+  />
+  <Image 
+    src={pragmaticCover} 
+    alt="The Pragmatic Programmer" 
+    class="h-[160px] sm:h-[220px] w-auto shadow-sm border border-line bg-canvas-2 object-contain" 
+  />
+  <Image 
+    src={thinkAndGrowRichCover} 
+    alt="Think and Grow Rich" 
+    class="h-[160px] sm:h-[220px] w-auto shadow-sm border border-line bg-canvas-2 object-contain" 
+  />
+</div>

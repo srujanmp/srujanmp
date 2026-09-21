@@ -7,6 +7,7 @@ declare global {
     __revealReady?: boolean;
     __noDragBound?: boolean;
     __timelineCleanup?: () => void;
+    __inkSnakeDone?: boolean;
   }
 }
 
