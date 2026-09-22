@@ -12,9 +12,14 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 <header class="pt-7 pb-6 sm:pt-10 sm:pb-8">
   <div class="flex items-center justify-between gap-4">
     <a href="/" class="group flex items-center gap-2.5 shrink-0" aria-label="Home">
-      <span
-        class="w-8 h-8 grid place-items-center rounded-full bg-ink text-canvas font-display text-[15px] leading-none pt-px transition-colors duration-300 group-hover:bg-accent"
-        aria-hidden="true">s</span>
+      <img
+        src="/mark.png"
+        alt=""
+        width="32"
+        height="32"
+        class="w-8 h-8 object-contain shrink-0 transition-opacity duration-300 group-hover:opacity-70"
+        aria-hidden="true"
+      />
       <span class="mono text-[13px] tracking-tight text-ink-2 hidden sm:inline">srujanmp</span>
     </a>
 
