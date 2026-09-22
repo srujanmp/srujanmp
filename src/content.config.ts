@@ -20,12 +20,14 @@ const projects = defineCollection({
 const experience = defineCollection({
   // Tell Astro exactly where to find the experience MDX files
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/experience" }),
-  schema: z.object({
+  // `image()` gives the logo the same optimisation pipeline as any other asset.
+  schema: ({ image }) => z.object({
     role: z.string(),
     company: z.string(),
     companyLink: z.string().optional(),
     date: z.string(),
     location: z.string(),
+    logo: image().optional(),
   }),
 });
 

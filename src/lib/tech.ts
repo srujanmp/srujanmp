@@ -62,6 +62,9 @@ const TECH_COLORS: Record<string, string> = {
   'Framer Motion': '#0055FF',
   'Google Drive': '#1FA463',
   'GitHub Pages': '#2A2A2A',
+  PWA: '#5A0FC8',
+  'Service Worker': '#1B6AC9',
+  Jenkins: '#D33833',
 };
 
 export const techColor = (name: string): string => TECH_COLORS[name] ?? '#8a857a';
