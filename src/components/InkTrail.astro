@@ -101,6 +101,9 @@
     let hotTarget = 0;
     let raf = 0;
     let wake = WAKE_MAX;
+    // Raised for the duration of the intro, which legitimately needs more live
+    // cells than ordinary drawing ever does.
+    let maxMarks = MAX_MARKS;
 
     // Intro state, stepped from the render loop rather than thousands of timers.
     let introCells: { gx: number; gy: number; at: number }[] | null = null;
@@ -165,7 +168,9 @@
       marks.push(mark);
       if (link) lastMark = mark;
 
-      if (marks.length > MAX_MARKS) marks = marks.slice(-MAX_MARKS);
+      // Trim in blocks. Slicing on every stamp past the cap meant rebuilding a
+      // multi-thousand element array hundreds of times per frame.
+      if (marks.length > maxMarks + 512) marks = marks.slice(-maxMarks);
     };
 
     const onDown = (event: PointerEvent) => {
@@ -235,6 +240,13 @@
           stamp(c.gx * GRID + GRID / 2, c.gy * GRID + GRID / 2, now, false);
         }
         if (introAt >= introCells.length) introCells = null;
+      }
+
+      // Hand the cap back only once the intro marks have faded out on their
+      // own. Dropping it the moment the wavefront finished would mean the next
+      // click culled tens of thousands of still-visible marks in one slice.
+      if (!introCells && maxMarks !== MAX_MARKS && marks.length <= MAX_MARKS) {
+        maxMarks = MAX_MARKS;
       }
 
       const w = window.innerWidth;
@@ -401,10 +413,10 @@
     /* ── Virus intro: flood-fill spread from top-left across entire page ── */
     const snakeIntro = () => {
       const cols = Math.ceil(window.innerWidth / GRID);
-      // Bounded to roughly two screenfuls: covering a 13,000px page would mean
-      // ~9,000 cells, which is a lot of work for a 1.4s flourish nobody scrolls
-      // through - and it is what made this unusable on a phone.
-      const reach = Math.min(document.documentElement.scrollHeight, window.innerHeight * 2);
+      // The whole page, so the fill is already there wherever you scroll to.
+      // Off-screen cells cost only a bounds check per frame in render(); what
+      // used to break this was the mark cap, not the cell count.
+      const reach = document.documentElement.scrollHeight;
       const rows = Math.ceil(reach / GRID);
 
       // Cells sorted by Manhattan distance from the origin, with jitter so the
@@ -425,6 +437,11 @@
       introCells = cells.map((c) => ({ gx: c.gx, gy: c.gy, at: (c.dist / maxDist) * duration }));
       introStart = performance.now();
       introAt = 0;
+
+      // Every intro cell must stay alive until it fades on its own. With the
+      // stock cap a wide viewport culled the oldest cells while the wavefront
+      // was still advancing, so the fill visibly retreated behind itself.
+      maxMarks = Math.max(MAX_MARKS, introCells.length + 512);
     };
 
     // Only run on first page load, not on view transitions
