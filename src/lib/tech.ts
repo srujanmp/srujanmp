@@ -65,6 +65,8 @@ const TECH_COLORS: Record<string, string> = {
   PWA: '#5A0FC8',
   'Service Worker': '#1B6AC9',
   Jenkins: '#D33833',
+  SIP: '#0B7285',
+  Asterisk: '#C2185B',
 };
 
 export const techColor = (name: string): string => TECH_COLORS[name] ?? '#8a857a';

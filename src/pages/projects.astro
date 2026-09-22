@@ -18,6 +18,8 @@ import sgpaShot from '../assets/projects/sgpacalc.png';
 import notesShot from '../assets/projects/notes.png';
 import macawShot from '../assets/projects/macaw.png';
 import ttShot from '../assets/projects/timetable.png';
+import sipShot from '../assets/projects/sip-app.png';
+import reuseShot from '../assets/projects/reusemart.png';
 
 // Rebuilt from each repo's own UI source, so a project can show its interface.
 const shots: Record<string, ImageMetadata> = {
@@ -36,6 +38,8 @@ const shots: Record<string, ImageMetadata> = {
   notes: notesShot,
   'macaw-sim': macawShot,
   timetable: ttShot,
+  'sip-app': sipShot,
+  reusemart: reuseShot,
 };
 
 const allProjects = await getCollection('projects');

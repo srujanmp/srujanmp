@@ -1,0 +1,14 @@
+---
+title: "SIP Phone - Softphone on a Self-Hosted PBX"
+year: "2026"
+techStack: ["Flutter", "Dart", "SIP", "WebRTC", "Asterisk", "Kotlin", "Docker"]
+link: "https://github.com/endlessworlds/SIP-app"
+featured: true
+order: 3
+---
+
+- Built a cross-platform softphone that registers to a SIP PBX and places real calls - the open-source system I worked on during my internship.
+- Handled the full call life cycle over SIP signalling, with WebRTC carrying the audio.
+- Wrote a native Android foreground service so the client stays registered and can be woken by an incoming call.
+- Stood up an Asterisk PBX in a devcontainer - pjsip, rtp and dialplan config - so the whole thing could be tested end to end without a provider.
+- Stored credentials in secure storage and kept the call log in a local SQLite database.
