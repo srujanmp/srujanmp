@@ -133,6 +133,27 @@ canvas {
   transform: scaleX(1);
 }
 
+/* Touch targets: on a touch screen the nav links are only ~20px tall, which is
+   well under the 44px comfortable minimum. Extend the hit area with an
+   invisible pseudo-element so nothing moves - on phone or on desktop.
+   Scoped to the nav, which is a single row: wrapping link groups get real
+   padding instead, since an oversized box there would overlap the row below. */
+@media (pointer: coarse) {
+  header nav .link {
+    position: relative;
+  }
+
+  header nav .link::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    right: -8px;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+}
+
 /* ==========================================================================
    Photo frames
    ========================================================================== */
@@ -255,6 +276,51 @@ html.reveal-failsafe [data-reveal] {
   transform: none;
 }
 
+/* --------------------------------------------------------------------------
+   Group reveal: the container itself doesn't move — its [data-stagger]
+   children come in one after another, so a card assembles as you reach it.
+   -------------------------------------------------------------------------- */
+.js [data-reveal].reveal-group {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.js [data-reveal].reveal-group [data-stagger] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 640ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 640ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 640ms ease;
+  transition-delay: calc(var(--stagger, 0) * 85ms);
+}
+
+.js [data-reveal].reveal-group.is-visible [data-stagger],
+html.reveal-failsafe [data-stagger] {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Big project numeral — a faint watermark that lights up on arrival.
+   -------------------------------------------------------------------------- */
+.project-index {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 0, "WONK" 1, "opsz" 144;
+  font-size: clamp(3.5rem, 7vw, 5.25rem);
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-line-2);
+}
+
+.js [data-reveal].reveal-group.is-visible .project-index,
+html.reveal-failsafe .project-index {
+  color: var(--color-accent);
+}
+
 /* ==========================================================================
    Prose overrides for MDX content
    ========================================================================== */
@@ -290,11 +356,16 @@ html.reveal-failsafe [data-reveal] {
   }
 
   [data-rise],
-  [data-reveal] {
+  [data-reveal],
+  [data-stagger] {
     opacity: 1;
     transform: none;
     animation: none;
     transition: none;
+  }
+
+  .project-index {
+    color: var(--color-accent);
   }
 
   .marquee__track {

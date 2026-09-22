@@ -8,6 +8,15 @@ import spyderShot from '../assets/projects/spyderspace.png';
 import eventhubShot from '../assets/projects/eventhub.png';
 import foodShot from '../assets/projects/food-platform.png';
 import endlessShot from '../assets/projects/endless-worlds.png';
+import aegisShot from '../assets/projects/aegis-mesh.png';
+import calbotShot from '../assets/projects/calbot.png';
+import ctShot from '../assets/projects/company-tracker.png';
+import gymratShot from '../assets/projects/gymrat.png';
+import geoShot from '../assets/projects/geomemory.png';
+import vishnuShot from '../assets/projects/vishnudocs.png';
+import sgpaShot from '../assets/projects/sgpacalc.png';
+import notesShot from '../assets/projects/notes.png';
+import macawShot from '../assets/projects/macaw.png';
 
 // Rebuilt from each repo's own UI source, so a project can show its interface.
 const shots: Record<string, ImageMetadata> = {
@@ -16,10 +25,35 @@ const shots: Record<string, ImageMetadata> = {
   'event-hub': eventhubShot,
   'food-ordering': foodShot,
   endlessworlds: endlessShot,
+  aegisemergency: aegisShot,
+  calbot: calbotShot,
+  'company-tracker': ctShot,
+  gymrat: gymratShot,
+  geomemory: geoShot,
+  vishnudocs: vishnuShot,
+  sgpacalc: sgpaShot,
+  notes: notesShot,
+  'macaw-sim': macawShot,
 };
 
 const allProjects = await getCollection('projects');
-allProjects.sort((a, b) => parseInt(b.data.year) - parseInt(a.data.year));
+
+// Featured work leads; everything else follows under "More builds".
+// Inside a group an explicit `order` wins (so MACAW can sit last), and
+// anything without one falls back to newest year first.
+allProjects.sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+
+  const ao = a.data.order;
+  const bo = b.data.order;
+  if (ao !== undefined || bo !== undefined) {
+    return (ao ?? Number.MAX_SAFE_INTEGER) - (bo ?? Number.MAX_SAFE_INTEGER);
+  }
+
+  return parseInt(b.data.year) - parseInt(a.data.year);
+});
+
+const featuredCount = allProjects.filter((p) => p.data.featured).length;
 
 const rendered = await Promise.all(
   allProjects.map(async (project) => ({ project, Content: (await render(project)).Content }))
@@ -28,7 +62,7 @@ const rendered = await Promise.all(
 
 <Layout
   title="Projects - Srujan M Padmashali"
-  description="Distributed backends, real-time apps, an offline mesh emergency network and an AI-driven game. Built in Go, Node.js, Flutter and Godot."
+  description="Distributed backends, real-time apps, an offline mesh emergency network, a native Android gym system and a wireless MAC protocol simulation. Built in Go, Node.js, Kotlin, Python, C++, Flutter and Godot."
 >
   <header class="pt-4 pb-14 sm:pb-20">
     <p class="eyebrow mb-5" data-rise="1">{allProjects.length} builds · 2024 - 2026</p>
@@ -43,19 +77,31 @@ const rendered = await Promise.all(
       rendered.map(({ project, Content }, index) => {
         const link = project.data.link?.trim();
         return (
+          <Fragment>
+          {index === featuredCount && (
+            <div class="rule-heading pt-14 sm:pt-20 pb-2" data-reveal>
+              <h2 class="eyebrow !text-ink shrink-0">More builds</h2>
+            </div>
+          )}
           <article
-            class="group grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-5 py-10 sm:py-14 border-t border-line"
+            class="group reveal-group grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-5 py-10 sm:py-16 border-t border-line"
             data-reveal
           >
             <div class="md:col-span-3">
-              <p class="mono text-[11px] text-ink-3 mb-2">
+              <p class="project-index mb-3" data-stagger style="--stagger:0">
                 {String(index + 1).padStart(2, '0')}
               </p>
-              <p class="mono text-[13px] text-accent">{project.data.year}</p>
+              <p class="mono text-[13px] text-ink-2" data-stagger style="--stagger:1">
+                {project.data.year}
+              </p>
             </div>
 
             <div class="md:col-span-9 min-w-0">
-              <h2 class="display text-2xl sm:text-3xl text-ink mb-5 leading-tight">
+              <h2
+                class="display text-2xl sm:text-3xl text-ink mb-5 leading-tight"
+                data-stagger
+                style="--stagger:2"
+              >
                 {link ? (
                   <a
                     href={link}
@@ -80,19 +126,29 @@ const rendered = await Promise.all(
                 )}
               </h2>
 
-              <div class="prose prose-sm prose-ink max-w-none mb-6">
+              <div class="prose prose-sm prose-ink max-w-none mb-6" data-stagger style="--stagger:3">
                 <Content />
               </div>
 
-              <TechTags items={project.data.techStack} />
+              <div data-stagger style="--stagger:4">
+                <TechTags items={project.data.techStack} />
+              </div>
 
               {shots[project.id] && (
-                <div class="mt-6 max-w-[420px] rounded-lg overflow-hidden border border-line bg-canvas-2">
+                <div
+                  class={`mt-6 rounded-lg overflow-hidden border border-line bg-canvas-2 ${
+                    project.data.featured ? 'max-w-[420px]' : 'max-w-[290px]'
+                  }`}
+                  data-stagger
+                  style="--stagger:5"
+                >
                   <Image
                     src={shots[project.id]}
                     alt={`${project.data.title} interface`}
-                    widths={[480, 800]}
-                    sizes="(max-width: 640px) 85vw, 420px"
+                    widths={project.data.featured ? [480, 800] : [340, 580]}
+                    sizes={project.data.featured
+                      ? '(max-width: 640px) 85vw, 420px'
+                      : '(max-width: 640px) 70vw, 290px'}
                     loading="lazy"
                     class="w-full h-auto block"
                   />
@@ -100,6 +156,7 @@ const rendered = await Promise.all(
               )}
             </div>
           </article>
+          </Fragment>
         );
       })
     }

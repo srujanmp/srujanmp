@@ -1,0 +1,13 @@
+---
+title: "GymRat - Offline Gym Management for Android"
+year: "2026"
+techStack: ["Kotlin", "Jetpack Compose", "Room", "CameraX", "WorkManager", "GitHub Actions"]
+link: "https://github.com/srujanmp/gymrat"
+order: 3
+---
+
+- Built a native Android app that runs a whole gym offline - members, plans, payments, expenses, leads and class schedules.
+- Modelled six Room tables behind a repository layer so every screen reads from one source of truth.
+- Added QR check-in: the app generates a member code and scans it back with CameraX.
+- Scheduled renewal reminders as SMS through WorkManager, so they fire even after a reboot.
+- Set up GitHub Actions to build and publish a release APK on every tagged commit.

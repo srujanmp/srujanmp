@@ -9,6 +9,11 @@ const projects = defineCollection({
     year: z.string(),
     techStack: z.array(z.string()),
     link: z.string().optional(),
+    // Headline work, listed first. Everything else falls under "More builds".
+    featured: z.boolean().default(false),
+    // Explicit position inside its group; lower comes first. Use a high number
+    // to pin something to the end. Unset falls back to newest-year-first.
+    order: z.number().optional(),
   }),
 });
 

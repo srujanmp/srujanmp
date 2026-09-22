@@ -9,6 +9,16 @@ import kurtaWall from '../assets/photos/kurta-wall.jpg';
 import ghatsRoad from '../assets/photos/ghats-road.jpg';
 import ghatsWide from '../assets/photos/ghats-wide.jpg';
 import throne from '../assets/photos/throne.jpg';
+// Sliced from one age-ordered collage, one per milestone year.
+import y2005 from '../assets/photos/age/y2005.jpg';
+import y2009 from '../assets/photos/age/y2009.jpg';
+import y2010 from '../assets/photos/age/y2010.jpg';
+import y2011 from '../assets/photos/age/y2011.jpg';
+import y2013 from '../assets/photos/age/y2013.jpg';
+import y2015 from '../assets/photos/age/y2015.jpg';
+import y2019 from '../assets/photos/age/y2019.jpg';
+import y2020 from '../assets/photos/age/y2020.jpg';
+import y2021 from '../assets/photos/age/y2021.jpg';
 import nmamitLogo from '../assets/logos/nmamit.png';
 import vidyodayaLogo from '../assets/logos/vidyodaya.png';
 import gmvpsLogo from '../assets/logos/gmvps.png';
@@ -67,15 +77,15 @@ const startYear = 2005;
 type Milestone = { text: string; month?: string; photo?: ImageMetadata; alt?: string };
 
 const milestones: Record<number, Milestone[]> = {
-  2005: [{ text: 'Spawned on 21 Sep' }],
-  2009: [{ text: 'LKG' }],
-  2010: [{ text: 'UKG' }],
-  2011: [{ text: 'Class 1' }],
-  2013: [{ text: 'First real interest in tech' }],
-  2015: [{ text: "Inherited my grandfather's old laptop" }],
-  2019: [{ text: 'COVID-19' }],
-  2020: [{ text: 'Finished Class 10' }],
-  2021: [{ text: 'PUC - PCMC with Computer Science' }],
+  2005: [{ text: 'Spawned on 21 Sep', photo: y2005, alt: 'Srujan as a toddler' }],
+  2009: [{ text: 'LKG', photo: y2009, alt: 'Srujan aged about four' }],
+  2010: [{ text: 'UKG', photo: y2010, alt: 'Srujan aged about five' }],
+  2011: [{ text: 'Class 1', photo: y2011, alt: 'Srujan aged about six' }],
+  2013: [{ text: 'First real interest in tech', photo: y2013, alt: 'Srujan aged about eight' }],
+  2015: [{ text: "Inherited my grandfather's old laptop", photo: y2015, alt: 'Srujan aged about ten' }],
+  2019: [{ text: 'COVID-19', photo: y2019, alt: 'Srujan aged about fourteen' }],
+  2020: [{ text: 'Finished Class 10', photo: y2020, alt: 'Srujan aged about fifteen' }],
+  2021: [{ text: 'PUC - PCMC with Computer Science', photo: y2021, alt: 'Srujan aged about sixteen' }],
   2023: [
     {
       text: 'Started BTech ISE at NMAMIT',
@@ -125,7 +135,7 @@ const gallery = [
         Design, Books and the occasional game engine when I get bored.
       </p>
 
-      <div class="flex flex-wrap items-center gap-x-6 gap-y-3" data-rise="4">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3 max-sm:gap-y-1" data-rise="4">
         <a
           href="/projects"
           data-astro-prefetch="hover"
@@ -134,10 +144,10 @@ const gallery = [
           See my work
           <span aria-hidden="true">→</span>
         </a>
-        <a href="mailto:srujanmpadmashali@gmail.com" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">Email</a>
-        <a href="https://github.com/srujanmp" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">GitHub</a>
-        <a href="https://linkedin.com/in/srujanmpadmashali" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">LinkedIn</a>
-        <a href="https://leetcode.com/u/srujanmpadmashali" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors">LeetCode</a>
+        <a href="mailto:srujanmpadmashali@gmail.com" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors max-sm:py-2">Email</a>
+        <a href="https://github.com/srujanmp" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors max-sm:py-2">GitHub</a>
+        <a href="https://linkedin.com/in/srujanmpadmashali" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors max-sm:py-2">LinkedIn</a>
+        <a href="https://leetcode.com/u/srujanmpadmashali" target="_blank" rel="noopener noreferrer" class="link mono text-[13px] text-ink-2 hover:text-accent transition-colors max-sm:py-2">LeetCode</a>
       </div>
     </div>
 

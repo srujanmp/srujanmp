@@ -1,0 +1,13 @@
+---
+title: "CalBot - Plain English to Google Calendar"
+year: "2026"
+techStack: ["Python", "Groq", "Telegram Bot API", "Google Calendar API", "AWS Lambda"]
+link: "https://github.com/srujanmp/telegram-calendar-bot"
+order: 1
+---
+
+- Built a Telegram bot that turns a message like "ML exam May 5 at 10am 3 hours" into a real calendar event.
+- Parsed the text with Llama 3.3 70B on Groq, pulling out title, start, duration and category.
+- Handled edits and deletes conversationally, re-parsing the instruction against the existing event.
+- Wrote events through the Google Calendar API with OAuth, colour-coding them by category.
+- Packaged it to run either as a long-poll worker or on AWS Lambda.
