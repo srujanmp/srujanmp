@@ -23,7 +23,7 @@
     z-index: 0;
   }
 
-  @media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce) {
     #ink-trail {
       display: none;
     }
@@ -32,7 +32,7 @@
 
 <script>
   const GRID = 24; // dot spacing in CSS px
-  const WAKE = 132; // radius the pointer wakes dots within
+  const WAKE_MAX = 132; // radius the pointer wakes dots within, on a wide screen
   const LIFETIME = 2400; // how long a stamped node lives, ms
   const LINK_MS = 230; // how long a connecting edge takes to draw, ms
   const MAX_MARKS = 4000; // hard cap (raised for snake intro)
@@ -71,11 +71,11 @@
   };
 
   const setup = () => {
-    const fine = window.matchMedia('(pointer: fine)').matches;
+    // Runs on touch as well as mouse - a tap stamps, a drag draws.
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canvas = document.getElementById('ink-trail');
 
-    if (!fine || still || !(canvas instanceof HTMLCanvasElement)) {
+    if (still || !(canvas instanceof HTMLCanvasElement)) {
       teardown();
       return;
     }
@@ -100,6 +100,12 @@
     let hot = 0; // eased 0..1, how "live" the field is (pointer over a link)
     let hotTarget = 0;
     let raf = 0;
+    let wake = WAKE_MAX;
+
+    // Intro state, stepped from the render loop rather than thousands of timers.
+    let introCells: { gx: number; gy: number; at: number }[] | null = null;
+    let introStart = 0;
+    let introAt = 0;
 
     /** One tile holding a single dot, repeated across the viewport. */
     const buildPattern = () => {
@@ -119,6 +125,8 @@
     };
 
     const resize = () => {
+      // A fixed 132px halo swallows a third of a phone screen.
+      wake = Math.max(64, Math.min(WAKE_MAX, window.innerWidth * 0.2));
       dpr = window.devicePixelRatio || 1;
       canvas.width = Math.floor(window.innerWidth * dpr);
       canvas.height = Math.floor(window.innerHeight * dpr);
@@ -166,6 +174,10 @@
       drawing = true;
       lastX = event.pageX;
       lastY = event.pageY;
+      // Touch has no hover, so first contact is what lights the field up.
+      px = event.clientX;
+      py = event.clientY;
+      inside = true;
       stamp(lastX, lastY, performance.now());
     };
 
@@ -191,8 +203,11 @@
       lastY = y;
     };
 
-    const stop = () => {
+    const stop = (event?: PointerEvent) => {
       drawing = false;
+      // A finger that has lifted is no longer anywhere, so drop the halo -
+      // a mouse keeps hovering, so leave it alone.
+      if (event && event.pointerType !== 'mouse') inside = false;
     };
 
     const onLeave = () => {
@@ -212,6 +227,16 @@
     };
 
     const render = (now: number) => {
+      // Release the next slice of the intro wavefront for this frame.
+      if (introCells) {
+        const elapsed = now - introStart;
+        while (introAt < introCells.length && introCells[introAt].at <= elapsed) {
+          const c = introCells[introAt++];
+          stamp(c.gx * GRID + GRID / 2, c.gy * GRID + GRID / 2, now, false);
+        }
+        if (introAt >= introCells.length) introCells = null;
+      }
+
       const w = window.innerWidth;
       const h = window.innerHeight;
       const sx = window.scrollX;
@@ -236,7 +261,7 @@
       if (inside) {
         const pgx = px + sx;
         const pgy = py + sy;
-        const radius = WAKE * (1 + hot * 0.3);
+        const radius = wake * (1 + hot * 0.3);
 
         const fromX = Math.floor((pgx - radius) / GRID);
         const toX = Math.floor((pgx + radius) / GRID);
@@ -376,27 +401,30 @@
     /* ── Virus intro: flood-fill spread from top-left across entire page ── */
     const snakeIntro = () => {
       const cols = Math.ceil(window.innerWidth / GRID);
-      const rows = Math.ceil(document.documentElement.scrollHeight / GRID);
+      // Bounded to roughly two screenfuls: covering a 13,000px page would mean
+      // ~9,000 cells, which is a lot of work for a 1.4s flourish nobody scrolls
+      // through - and it is what made this unusable on a phone.
+      const reach = Math.min(document.documentElement.scrollHeight, window.innerHeight * 2);
+      const rows = Math.ceil(reach / GRID);
 
-      // Build cells sorted by Manhattan distance from origin + random jitter
+      // Cells sorted by Manhattan distance from the origin, with jitter so the
+      // wavefront reads as organic rather than a clean diagonal.
       const cells: { gx: number; gy: number; dist: number }[] = [];
       for (let col = 0; col < cols; col++) {
         for (let row = 0; row < rows; row++) {
-          const dist = col + row + Math.random() * 1.8; // jitter for organic feel
-          cells.push({ gx: col, gy: row, dist });
+          cells.push({ gx: col, gy: row, dist: col + row + Math.random() * 1.8 });
         }
       }
       cells.sort((a, b) => a.dist - b.dist);
 
       const duration = 1400;
-      const maxDist = cells[cells.length - 1].dist;
+      const maxDist = cells[cells.length - 1]?.dist || 1;
 
-      cells.forEach((cell) => {
-        const delay = (cell.dist / maxDist) * duration;
-        setTimeout(() => {
-          stamp(cell.gx * GRID + GRID / 2, cell.gy * GRID + GRID / 2, performance.now(), false);
-        }, delay);
-      });
+      // Precompute each cell's reveal time; render() walks the list in step
+      // with the clock, so this costs one array instead of N timers.
+      introCells = cells.map((c) => ({ gx: c.gx, gy: c.gy, at: (c.dist / maxDist) * duration }));
+      introStart = performance.now();
+      introAt = 0;
     };
 
     // Only run on first page load, not on view transitions
